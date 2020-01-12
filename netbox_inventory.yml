@@ -1,0 +1,17 @@
+plugin: netbox
+api_endpoint: https://netbox.freifunk-duesseldorf.de/
+validate_certs: True
+config_context: False
+
+query_filters:
+  - tenant: ddorf-mesh
+  - role: supernode-v2
+
+group_by:
+  - sites
+  - device_roles
+
+compose:
+  hostname: name
+  primary_ipv4_address: primary_ip4.address
+  primary_ipv6_address: primary_ip6.address
