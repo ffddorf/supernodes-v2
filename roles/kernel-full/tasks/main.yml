@@ -1,0 +1,12 @@
+---
+- name: Ensure full kernel
+  package:
+    name: linux-image-amd64
+    state: present
+  notify: reboot
+
+- name: Remove cloud kernel
+  package:
+    name: linux-image-cloud-amd64
+    state: absent
+  notify: reboot

@@ -1,0 +1,21 @@
+---
+- name: Set hostname
+  hostname:
+    name: "{{ hostname }}"
+
+- name: Set hostname in hosts
+  lineinfile:
+    line: "127.0.0.1 {{ hostname }}"
+    destfile: /etc/hosts
+
+- name: Ensure config loading
+  lineinfile:
+    line: "source /etc/network/interfaces.d/*"
+    dest: /etc/network/interfaces
+  notify: reboot
+
+- name: Configure loopback address
+  template:
+    src: loopback.j2
+    dest: /etc/network/interfaces.d/loopback
+  notify: reboot

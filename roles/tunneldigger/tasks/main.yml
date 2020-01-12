@@ -1,0 +1,41 @@
+---
+- name: Load kernel modules
+  modprobe:
+    name: "{{ item }}"
+  with_items:
+    - l2tp_core
+    - l2tp_eth
+    - l2tp_netlink
+
+- name: Persist kernel modules
+  lineinfile:
+    line: "{{ item }}"
+    dest: /etc/modprobe.d/l2tp.conf
+    create: yes
+  with_items:
+    - l2tp_core
+    - l2tp_eth
+    - l2tp_netlink
+
+- name: Install docker
+  package:
+    name: docker.io
+
+- name: Configure tunneldigger
+  template:
+    src: tunneldigger.conf.j2
+    dest: /etc/tunneldigger.conf
+  notify: restart tunneldigger
+
+- name: Create tunneldigger service
+  template:
+    src: tunneldigger-service.j2
+    dest: /etc/systemd/system/tunneldigger.service
+  register: td_service
+
+- name: Enable and start tunneldigger service
+  systemd:
+    name: tunneldigger
+    enabled: yes
+    state: started
+    daemon_reload: "{{ td_service.changed }}"

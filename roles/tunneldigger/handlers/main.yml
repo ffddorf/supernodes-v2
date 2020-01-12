@@ -1,0 +1,5 @@
+---
+- name: restart tunneldigger
+  systemd:
+    name: tunneldigger
+    state: restarted

@@ -1,0 +1,15 @@
+[Unit]
+Description=Tunneldigger
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop tunneldigger
+ExecStartPre=-/usr/bin/docker rm tunneldigger
+ExecStartPre=/usr/bin/docker pull ffddorf/tunneldigger:{{ tunneldigger_image_tag }}
+ExecStart=/usr/bin/docker run --privileged --net=host -v /etc/tunneldigger.conf:/tunneldigger.conf:ro --name tunneldigger ffddorf/tunneldigger:{{ tunneldigger_image_tag }}
+
+[Install]
+WantedBy=multi-user.target
