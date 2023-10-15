@@ -1,17 +1,12 @@
-plugin: netbox
+plugin: netbox.netbox.nb_inventory
 api_endpoint: https://netbox.freifunk-duesseldorf.de/
 validate_certs: True
 config_context: False
 
 query_filters:
-  - tenant: ddorf-mesh
   - role: supernode-v2
-
-group_by:
-  - sites
-  - device_roles
+  - status: staged
+  - status: active
 
 compose:
   hostname: name
-  primary_ipv4_address: primary_ip4.address
-  primary_ipv6_address: primary_ip6.address
