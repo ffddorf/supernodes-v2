@@ -4,3 +4,4 @@
   roles:
     - kernel-full
     - service-ip
+    - fastd

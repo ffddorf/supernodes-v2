@@ -1,0 +1,4 @@
+- name: reload fastd
+  ansible.builtin.service:
+    name: fastd@mesh
+    state: reloaded

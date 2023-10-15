@@ -1,0 +1,30 @@
+---
+- name: Install
+  ansible.builtin.package:
+    name: fastd
+    state: present
+
+- name: Create config dir
+  ansible.builtin.file:
+    path: /etc/fastd/mesh/
+    state: directory
+
+- name: Configure peer
+  ansible.builtin.template:
+    src: peer.conf.j2
+    dest: /etc/fastd/mesh/peer.conf
+    validate: fastd --verify-config --config-peer %s
+  notify: reload fastd
+
+- name: Configure server
+  ansible.builtin.template:
+    src: fastd.conf.j2
+    dest: /etc/fastd/mesh/fastd.conf
+    validate: fastd --verify-config --config %s
+  notify: reload fastd
+
+- name: Enable service
+  ansible.builtin.service:
+    name: fastd@mesh
+    state: started
+    enabled: true

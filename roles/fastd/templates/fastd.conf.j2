@@ -1,0 +1,18 @@
+log level warn;
+
+interface "vpn0";
+mtu 1280;
+
+bind {{ service_ipv4_address | ansible.utils.ipaddr('address') }} port 10000;
+bind [{{ service_ipv6_address | ansible.utils.ipaddr('address') }}] port 10000;
+
+method "null@l2tp";
+offload l2tp yes;
+mode multitap;
+persist interface no;
+
+secret "{{ fastd_secret }}";
+
+on up "ip link set up dev $INTERFACE";
+
+include peer "/etc/fastd/mesh/peer.conf";
