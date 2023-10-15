@@ -1,0 +1,60 @@
+# TODO: use stable address
+router id {{ ansible_default_ipv4.address }};
+
+log syslog all;
+
+protocol static service_v4 {
+	ipv4;
+
+  route {{ service_ipv4_address }} blackhole;
+}
+
+protocol static service_v6 {
+  ipv6;
+
+  route {{ service_ipv6_address }} blackhole;
+}
+
+define ffddorf_asn = 207871;
+
+template bgp ffddorf {
+  local as ffddorf_asn;
+  multihop 64;
+  default bgp_local_pref 200;
+
+  ipv4 {
+    next hop self;
+  };
+
+  ipv6 {
+    next hop self;
+  };
+};
+
+filter service {
+  if net ~ {{ service_ipv4_address }} then accept;
+  if net ~ {{ service_ipv6_address }} then accept;
+  reject;
+}
+
+{% for router in routers %}
+protocol bgp service_v4_{{ router.name | lower }} from ffddorf {
+	description "Service Address Announcement IPv4 to {{ router.name }}";
+	local {{ ansible_default_ipv4.address }};
+	neighbor {{ router.bgp_peer_ipv4_address }} as ffddorf_asn;
+
+	ipv4 {
+		export filter service;
+	};
+}
+
+protocol bgp service_v6_{{ router.name | lower }} from ffddorf {
+	description "Service Address Announcement IPv6 to {{ router.name }}";
+	local {{ ansible_default_ipv6.address }};
+	neighbor {{ router.bgp_peer_ipv6_address }} as ffddorf_asn;
+
+	ipv6 {
+		export filter service;
+	};
+}
+{% endfor %}

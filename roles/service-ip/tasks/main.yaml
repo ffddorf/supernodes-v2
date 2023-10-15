@@ -1,0 +1,18 @@
+---
+- name: Configure Service IP
+  ansible.builtin.template:
+    src: service.network.j2
+    dest: /etc/systemd/network/service.network
+  notify: reload systemd-networkd
+
+- name: Install bird
+  ansible.builtin.package:
+    name: bird2
+    state: present
+
+- name: Configure bird
+  ansible.builtin.template:
+    src: bird.conf.j2
+    dest: /etc/bird/bird.conf
+    validate: bird -c %s -p
+  notify: reload bird

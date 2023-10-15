@@ -1,0 +1,9 @@
+- name: reload systemd-networkd
+  service:
+    name: systemd-networkd
+    state: reloaded
+
+- name: reload bird
+  service:
+    name: bird
+    state: reloaded

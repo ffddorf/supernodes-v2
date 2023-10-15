@@ -1,0 +1,7 @@
+routers:
+  - name: CR3
+    bgp_peer_ipv4_address: "45.151.166.3"
+    bgp_peer_ipv6_address: "2001:678:b7c::3"
+  - name: CR4
+    bgp_peer_ipv4_address: "45.151.166.4"
+    bgp_peer_ipv6_address: "2001:678:b7c::4"
