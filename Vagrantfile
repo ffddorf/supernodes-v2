@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Vagrant.configure('2') do |config|
-  config.vm.box = 'debian/buster64'
+  config.vm.box = 'debian/bookworm64'
 
   config.vm.provision 'ansible' do |ansible|
     ansible.playbook = 'site.yml'
