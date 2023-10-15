@@ -1,7 +1,5 @@
 ---
 - hosts: all
-  become: yes
+  become: true
   roles:
-    - common
     - kernel-full
-    - tunneldigger
