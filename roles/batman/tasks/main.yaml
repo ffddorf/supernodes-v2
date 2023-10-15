@@ -1,0 +1,16 @@
+---
+- name: Install packages
+  ansible.builtin.package:
+    name: batctl
+    state: present
+
+- name: Load kernel modules
+  community.general.modprobe:
+    name: batman-adv
+    state: present
+
+- name: Make kernel modules persistent
+  ansible.builtin.lineinfile:
+    dest: /etc/modules-load.d/batman.conf
+    line: batman-adv
+    create: true
