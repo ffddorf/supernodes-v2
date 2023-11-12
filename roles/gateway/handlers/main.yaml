@@ -2,3 +2,8 @@
   ansible.builtin.service:
     name: systemd-networkd
     state: reloaded
+
+- name: restart dnsmasq
+  ansible.builtin.service:
+    name: dnsmasq
+    state: restarted

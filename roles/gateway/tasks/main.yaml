@@ -12,3 +12,14 @@
     name: net.ipv4.ip_forward
     value: "2"
     sysctl_set: true
+
+- name: Install DNS forwarder
+  ansible.builtin.package:
+    name: dnsmasq
+    state: present
+
+- name: Configure DNS forwarder
+  ansible.builtin.template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.conf
+  notify: restart dnsmasq
