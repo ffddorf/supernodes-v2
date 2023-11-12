@@ -6,3 +6,4 @@
     - { role: service-ip, tags: service-ip }
     - { role: fastd, tags: fastd }
     - { role: batman, tags: batman }
+    - { role: gateway, tags: gateway }

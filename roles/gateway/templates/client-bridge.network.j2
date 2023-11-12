@@ -1,0 +1,17 @@
+[Match]
+Name=br0
+
+[Link]
+RequiredForOnline=no
+
+[Address]
+Address={{ gateway_ipv4_address }}
+
+[Network]
+DHCPServer=yes
+
+[DHCPServer]
+PoolOffset=10
+PoolSize=64000
+EmitDNS=yes
+DNS=9.9.9.9
