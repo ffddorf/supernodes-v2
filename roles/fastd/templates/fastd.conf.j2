@@ -13,6 +13,6 @@ persist interface no;
 
 secret "{{ fastd_secret }}";
 
-on up "ip link set up dev $INTERFACE";
+on up "ip link set up dev $INTERFACE && ip link set $INTERFACE master br1";
 
 include peer "/etc/fastd/mesh/peer.conf";
