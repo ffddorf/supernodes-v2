@@ -7,3 +7,8 @@
   ansible.builtin.service:
     name: dnsmasq
     state: restarted
+
+- name: restart netfilter-persistent
+  ansible.builtin.service:
+    name: netfilter-persistent
+    state: restarted

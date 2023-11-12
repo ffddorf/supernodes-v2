@@ -1,0 +1,6 @@
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+-A FORWARD -p tcp -m tcp --dport 25 -j REJECT --reject-with icmp6-port-unreachable
+COMMIT
