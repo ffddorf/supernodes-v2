@@ -14,3 +14,21 @@
     dest: /etc/modules-load.d/batman.conf
     line: batman-adv
     create: true
+
+- name: Create Batman Interface
+  ansible.builtin.template:
+    src: batman.netdev.j2
+    dest: /etc/systemd/network/batman.netdev
+  notify: reload network
+
+- name: Create Batman Bridge
+  ansible.builtin.template:
+    src: batman-bridge.netdev.j2
+    dest: /etc/systemd/network/batman-bridge.netdev
+  notify: reload network
+
+- name: Configure Batman Bridge
+  ansible.builtin.template:
+    src: batman-bridge.network.j2
+    dest: /etc/systemd/network/batman-bridge.network
+  notify: reload network

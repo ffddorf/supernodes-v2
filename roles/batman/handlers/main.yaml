@@ -1,0 +1,4 @@
+- name: reload network
+  ansible.builtin.service:
+    name: systemd-networkd
+    state: reloaded
