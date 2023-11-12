@@ -2,7 +2,7 @@
 - hosts: all
   become: true
   roles:
-    - kernel-full
-    - service-ip
-    - fastd
-    - batman
+    - { role: kernel-full, tags: kernel-full }
+    - { role: service-ip, tags: service-ip }
+    - { role: fastd, tags: fastd }
+    - { role: batman, tags: batman }
