@@ -1,3 +1,0 @@
-service_ipv4_address: "45.151.166.36/32"
-service_ipv6_address: "2001:678:b7c:1500::11/128"
-gateway_ipv4_address: "10.11.0.1/16"
