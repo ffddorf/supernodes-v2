@@ -3,6 +3,7 @@
   become: true
   roles:
     - { role: kernel-full, tags: kernel-full }
+    - { role: nftables, tags: nftables }
     - { role: service-ip, tags: service-ip }
     - { role: fastd, tags: fastd }
     - { role: batman, tags: batman }
