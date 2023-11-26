@@ -1,5 +1,5 @@
 - name: Install nftables
-  pacansible.builtin.packagekage:
+  ansible.builtin.package:
     name: nftables
     state: present
 
