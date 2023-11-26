@@ -1,0 +1,5 @@
+ansible >= 2.10
+
+# for netbox.netbox
+pynetbox >= 7.2.0
+pytz
