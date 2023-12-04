@@ -1,0 +1,26 @@
+- name: Install nftables
+  ansible.builtin.package:
+    name: nftables
+    state: present
+
+- name: Uninstall iptables
+  ansible.builtin.package:
+    name: iptables
+    state: absent
+
+- name: Create rule dir
+  ansible.builtin.file:
+    path: /etc/nftables.d
+    state: directory
+
+- name: Setup rule loading
+  ansible.builtin.lineinfile:
+    path: /etc/nftables.conf
+    line: include "/etc/nftables.d/*"
+  notify: reload nftables
+
+- name: Enable rule loading
+  ansible.builtin.service:
+    name: nftables
+    state: started
+    enabled: true

@@ -8,7 +8,7 @@
     name: dnsmasq
     state: restarted
 
-- name: restart netfilter-persistent
+- name: reload nftables
   ansible.builtin.service:
-    name: netfilter-persistent
-    state: restarted
+    name: nftables
+    state: reloaded

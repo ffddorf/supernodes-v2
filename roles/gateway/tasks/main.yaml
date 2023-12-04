@@ -24,25 +24,13 @@
     dest: /etc/dnsmasq.conf
   notify: restart dnsmasq
 
-- name: Install firewall helper
+- name: (cleanup) Uninstall firewall helper
   ansible.builtin.package:
     name: iptables-persistent
-    state: present
+    state: absent
 
-- name: Configure IPv4 firewall rules
+- name: Configure firewall rules
   ansible.builtin.template:
-    src: firewall.v4.j2
-    dest: /etc/iptables/rules.v4
-  notify: restart netfilter-persistent
-
-- name: Configure IPv6 firewall rules
-  ansible.builtin.template:
-    src: firewall.v6.j2
-    dest: /etc/iptables/rules.v6
-  notify: restart netfilter-persistent
-
-- name: Enable firewall helper
-  ansible.builtin.service:
-    name: netfilter-persistent
-    state: started
-    enabled: true
+    src: firewall.nft.j2
+    dest: /etc/nftables.d/firewall.nft
+  notify: reload nftables

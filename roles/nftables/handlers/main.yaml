@@ -1,0 +1,4 @@
+- name: reload nftables
+  ansible.builtin.service:
+    name: nftables
+    state: reloaded

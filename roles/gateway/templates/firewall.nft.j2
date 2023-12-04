@@ -1,0 +1,22 @@
+define client_subnet = {{ gateway_ipv4_address | ansible.utils.ipaddr('network/prefix') }}
+
+table inet filter {
+  chain forward {
+    type filter hook forward priority 0; policy drop;
+
+    # reject SMTP
+    tcp dport 25 reject with icmp type port-unreachable
+
+    # limit routed traffic to ip subnet
+    iif br0 ip saddr $client_subnet accept
+    oif br0 ip daddr $client_subnet accept
+  }
+}
+
+table inet nat {
+  chain postrouting {
+    type nat hook postrouting priority 0;
+
+    ip saddr $client_subnet oif eth0 snat to {{ service_ipv4_address | ipaddr('address') }}
+  }
+}
