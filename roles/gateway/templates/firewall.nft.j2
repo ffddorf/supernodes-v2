@@ -17,6 +17,6 @@ table inet nat {
   chain postrouting {
     type nat hook postrouting priority 0;
 
-    oif eth0 saddr $client_subnet snat to {{ service_ipv4_address | ipaddr('address') }}
+    ip saddr $client_subnet oif eth0 snat to {{ service_ipv4_address | ipaddr('address') }}
   }
 }
