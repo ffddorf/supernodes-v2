@@ -1,4 +1,4 @@
-define client_subnet = {{ gateway_ipv4_address | ipaddr('net') }}
+define client_subnet = {{ gateway_ipv4_address | ansible.utils.ipaddr('network/prefix') }}
 
 table inet filter {
   chain forward {
