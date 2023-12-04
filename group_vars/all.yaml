@@ -11,9 +11,10 @@ fastd_peer_public: "8a486f7b27324cd41761636e40b3bb6e9c1b183588cc997af93c593fb15d
 
 client_ipv4_container: "10.0.0.0/8"
 client_bridge_interface: "{{ interfaces | selectattr('name', 'equalto', 'br0') | first }}"
-gateway_ipv4_address: >
+gateway_ipv4_address: >-
   {{ client_bridge_interface.ip_addresses |
       map(attribute='address') |
       ansible.utils.ipv4 |
-      ansible.utils.ipaddr(client_ipv4_container)
+      ansible.utils.ipaddr(client_ipv4_container) |
+      first
   }}
