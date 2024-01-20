@@ -15,7 +15,8 @@ jobs:
     env:
       TF_HTTP_PASSWORD: ${{ github.token }}
       TF_IN_AUTOMATION: "true"
-      TF_LOG: "trace"
+      TF_CLI_ARGS: "-input=false"
+      TF_LOG: "debug"
     steps:
       - name: Download Workspace
         run: |
