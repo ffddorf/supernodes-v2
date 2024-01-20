@@ -1,0 +1,30 @@
+name: Speculative Run
+
+on:
+  workflow_dispatch:
+    inputs:
+      workspace_transfer_url:
+        description: "URL from which to download the workspace"
+        required: true
+        type: string
+
+jobs:
+  plan:
+    name: Plan
+    runs-on: ubuntu-22.04
+    env:
+      TF_HTTP_PASSWORD: ${{ github.token }}
+      TF_IN_AUTOMATION: "true"
+    defaults:
+      run:
+        working-directory: ./terraform
+    steps:
+      - name: Download Workspace
+        run: |
+          curl ${{ inputs.workspace_transfer_url }} --fail --silent | tar -xzf -
+        working-directory: .
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.6.6"
+      - run: terraform init
+      - run: terraform plan
