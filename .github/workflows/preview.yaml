@@ -15,16 +15,14 @@ jobs:
     env:
       TF_HTTP_PASSWORD: ${{ github.token }}
       TF_IN_AUTOMATION: "true"
-    defaults:
-      run:
-        working-directory: ./terraform
     steps:
       - name: Download Workspace
         run: |
           curl ${{ inputs.workspace_transfer_url }} --fail --silent | tar -xzf -
-        working-directory: .
       - uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.6.6"
       - run: terraform init
+        working-directory: ./terraform
       - run: terraform plan
+        working-directory: ./terraform
