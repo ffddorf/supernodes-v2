@@ -1,6 +1,6 @@
 resource "netbox_available_prefix" "primary_ipv4" {
   description = "Primary Address ${var.supernode_name}"
-  status      = "reserved"
+  status      = "active"
 
   parent_prefix_id = var.prefix_ipv4_id
   prefix_length    = 32

@@ -1,6 +1,6 @@
 resource "netbox_available_prefix" "primary_ipv6" {
   description = "Primary Address ${var.supernode_name}"
-  status      = "reserved"
+  status      = "active"
 
   parent_prefix_id = var.loopback_prefix_ipv6_id
   prefix_length    = 128
