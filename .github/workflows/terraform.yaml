@@ -42,6 +42,7 @@ jobs:
           AWS_DEFAULT_REGION: us-east-1
           AWS_ENDPOINT_URL: https://s3.us-east-005.backblazeb2.com
           S3_BUCKET: terraform-state-backup
+          TF_CLI_ARGS: ""
         run: |
           terraform show -json > state.json
           aws s3 cp state.json s3://${S3_BUCKET}/${{ github.repository }}/$(date +%s).json
@@ -53,7 +54,11 @@ jobs:
           for file in ${DELETE_FILES}; do aws s3 rm s3://${S3_BUCKET}/$file; done
 
       - run: terraform show -json tfplan > tfplan.json
+        env:
+          TF_CLI_ARGS: ""
       - run: terraform show -no-color tfplan > summary.txt
+        env:
+          TF_CLI_ARGS: ""
 
       - name: Create status check with details
         uses: actions/github-script@v7
