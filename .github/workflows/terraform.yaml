@@ -1,0 +1,175 @@
+name: Terraform
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  run:
+    name: Run
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+    env:
+      TF_HTTP_PASSWORD: ${{ github.token }}
+      TF_IN_AUTOMATION: "true"
+    defaults:
+      run:
+        working-directory: ./terraform
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.6.6"
+
+      - run: terraform init
+
+      - run: terraform plan -out=tfplan
+      - run: terraform apply tfplan | tee apply.log
+        if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+      - name: Backup state
+        if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.B2_TFBACKUP_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.B2_TFBACKUP_SECRET_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+          AWS_ENDPOINT_URL: https://s3.us-east-005.backblazeb2.com
+          S3_BUCKET: terraform-state-backup
+        run: |
+          terraform show -json > state.json
+          aws s3 cp state.json s3://${S3_BUCKET}/${{ github.repository }}/$(date +%s).json
+
+          DELETE_FILES=$(\
+            aws s3api list-objects-v2 --bucket "${S3_BUCKET}" --prefix "${{ github.repository }}" | \
+            jq -r '.Contents | map(.Key) | sort | reverse | .[5:] | .[]' \
+          )
+          for file in ${DELETE_FILES}; do aws s3 rm s3://${S3_BUCKET}/$file; done
+
+      - run: terraform show -json tfplan > tfplan.json
+      - run: terraform show -no-color tfplan > summary.txt
+
+      - name: Create status check with details
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const fs = require('fs').promises
+            const plan = JSON.parse(await fs.readFile('terraform/tfplan.json', 'utf-8'))
+            const humanSummary = await fs.readFile('terraform/summary.txt', 'utf-8')
+            let applyLog;
+            try {
+              applyLog = await fs.readFile('terraform/apply.log', 'utf-8')
+            } catch {}
+
+            function countActions(plan, type) {
+              return plan.resource_changes.filter(ch => ch.change.actions.includes(type)).length
+            }
+            const createCount = countActions(plan, 'create')
+            const updateCount = countActions(plan, 'update')
+            const deleteCount = countActions(plan, 'delete')
+
+            const noChanges = createCount == 0 && updateCount == 0 && deleteCount == 0
+            const title = noChanges
+              ? "No changes"
+              : (context.eventName === 'push'
+                ? `${createCount} added, ${updateCount} changed, ${deleteCount} destroyed`
+                : `${createCount} to add, ${updateCount} to change, ${deleteCount} to destroy`
+              )
+
+            const codefence = "```"
+            const summary = `
+            # Terraform Plan
+            ${codefence}
+            ${humanSummary.trim("\n")}
+            ${codefence}
+            ${!!applyLog ? `
+            # Terraform Apply
+            ${codefence}
+            ${applyLog.replace(/\u001b\[[^m]+m/g, '').trim()}
+            ${codefence}
+            ` : ""}
+            `
+
+            const sha = context.eventName === 'pull_request'
+              ? context.payload.pull_request.head.sha
+              : context.sha
+            await github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head_sha: sha,
+              status: 'completed',
+              conclusion: noChanges ? 'neutral' : 'success',
+              name: context.eventName === 'push' ? "Apply" : "Plan",
+              output: {
+                title,
+                summary,
+              },
+            });
+
+      - name: Show plan on PR
+        uses: actions/github-script@v7
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const { repository: { pullRequest: { comments } } } = await github.graphql(`
+              query($owner:String!, $name:String!, $pr:Int!) {
+                repository(owner:$owner, name:$name) {
+                  pullRequest(number:$pr) {
+                    comments(last: 10) {
+                      nodes {
+                        id,
+                        minimizedReason
+                        author {
+                          ...on Bot {
+                            login
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `, {
+              owner: context.repo.owner,
+              name: context.repo.repo,
+              pr: context.issue.number,
+            })
+
+            const commentsToHide = comments.nodes.filter((comment) => {
+              return !comment.minimizedReason && comment.author.login == "github-actions"
+            })
+            if (commentsToHide.length > 0) {
+              await github.graphql(`
+                mutation {
+                  ${commentsToHide.map((c,i) =>
+                    `c${i}: minimizeComment(input: { subjectId: "${c.id}", classifier: OUTDATED }) {
+                      clientMutationId
+                    }
+                    `
+                  ).join("")}
+                }
+              `)
+            }
+
+            const fs = require('fs').promises
+            const plan = await fs.readFile('terraform/summary.txt', 'utf-8')
+
+            const codefence = "```"
+            const body = `
+            🏗️ Terraform Plan
+            ${codefence}
+            ${plan.trim("\n")}
+            ${codefence}`
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body,
+            })
