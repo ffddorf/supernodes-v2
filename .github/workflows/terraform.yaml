@@ -34,7 +34,10 @@ jobs:
       - run: terraform init
 
       - run: terraform plan -out=tfplan
-      - run: |
+      - name: terraform apply
+        env:
+          TF_LOG: "debug"
+        run: |
           set -o pipefail
           terraform apply tfplan | tee apply.log
         if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
