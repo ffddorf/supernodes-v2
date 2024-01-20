@@ -6,7 +6,7 @@ module "supernode" {
 
   source = "./modules/supernode"
 
-  supernode_name = "${var.domain_name}_${count.index}"
+  supernode_name = "${var.domain_name}-${count.index}"
 
   prefix_ipv4_id          = data.netbox_prefix.primary_ipv4.id
   prefix_ipv6_id          = netbox_available_prefix.domain_ipv6.id
