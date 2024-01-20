@@ -17,6 +17,7 @@ jobs:
       TF_HTTP_PASSWORD: ${{ github.token }}
       TF_IN_AUTOMATION: "true"
       TF_CLI_ARGS: "-input=false"
+      NETBOX_API_TOKEN: ${{ secrets.NETBOX_API_TOKEN }}
     defaults:
       run:
         working-directory: ./terraform
