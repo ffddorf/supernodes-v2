@@ -8,3 +8,5 @@
   - assigned from our `/24` aggregate
 - Assign a `/64` loopback prefix for all supernodes in a domain
   - each supernode gets one IP from this prefix
+- Assign a management IP from the site management net
+  - Statically set on the VM config
