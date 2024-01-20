@@ -34,7 +34,9 @@ jobs:
       - run: terraform init
 
       - run: terraform plan -out=tfplan
-      - run: terraform apply tfplan | tee apply.log
+      - run: |
+          set -o pipefail
+          terraform apply tfplan | tee apply.log
         if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
       - name: Backup state
         if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
@@ -46,6 +48,8 @@ jobs:
           S3_BUCKET: terraform-state-backup
           TF_CLI_ARGS: ""
         run: |
+          set -e -o pipefail
+
           terraform show -json > state.json
           aws s3 cp state.json s3://${S3_BUCKET}/${{ github.repository }}/$(date +%s).json
 
