@@ -39,7 +39,7 @@ variable "vm_target_node" {
 variable "vm_template_name" {
   type        = string
   description = "Existing VM to use as template for cloning new VM"
-  default     = "debian12"
+  default     = "debian12-guest-agent"
 }
 
 variable "vm_storage_pool_name" {
