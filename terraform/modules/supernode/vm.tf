@@ -41,13 +41,14 @@ resource "proxmox_vm_qemu" "supernode" {
   agent     = 1
   os_type   = "cloud-init"
   ipconfig0 = "ip=dhcp,ip6=${netbox_available_ip_address.management_ipv6.ip_address}"
+  ciuser    = "admin"
+  sshkeys   = join("\n", var.vm_ssh_keys)
 
   define_connection_info = false
 
   lifecycle {
     ignore_changes = [
-      full_clone,
-      define_connection_info
+      define_connection_info,
     ]
   }
 }
