@@ -12,7 +12,7 @@ resource "proxmox_vm_qemu" "supernode" {
   memory  = 1024
 
   disk {
-    type    = "virtio"
+    type    = "scsi"
     storage = var.vm_storage_pool_name
     size    = "4G"
   }
@@ -46,7 +46,6 @@ resource "proxmox_vm_qemu" "supernode" {
 
   lifecycle {
     ignore_changes = [
-      full_clone,
       define_connection_info
     ]
   }
