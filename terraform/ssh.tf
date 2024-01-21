@@ -6,7 +6,3 @@ data "http" "github_keys" {
 locals {
   ssh_keys = flatten([for name, resp in data.http.github_keys : split("\n", chomp(resp.response_body))])
 }
-
-output "ssh_keys" {
-  value = local.ssh_keys
-}
