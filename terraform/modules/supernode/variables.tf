@@ -53,3 +53,8 @@ variable "vm_resource_pool" {
   description = "Proxmox pool to create VM in"
   default     = "Supernodes2.0"
 }
+
+variable "vm_ssh_keys" {
+  type        = list(string)
+  description = "Public keys to grant access to"
+}

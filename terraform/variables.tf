@@ -27,3 +27,9 @@ variable "primary_prefix_ipv6" {
   description = "Prefix to issue primary IPv6 addresses from"
   default     = "2001:678:b7c::/48"
 }
+
+variable "ssh_github_users" {
+  type        = list(string)
+  description = "Users to gather SSH public keys from GitHub for"
+  default     = ["mraerino", "nomaster"]
+}
