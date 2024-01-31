@@ -2,7 +2,7 @@ terraform {
   required_providers {
     netbox = {
       source  = "e-breuninger/netbox"
-      version = "3.7.6"
+      version = "3.8.0"
     }
     proxmox = {
       source  = "Telmate/proxmox"
