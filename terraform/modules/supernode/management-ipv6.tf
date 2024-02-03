@@ -13,6 +13,12 @@ resource "netbox_ip_address" "management_ipv6" {
 
   description = "Management Address ${var.supernode_name}"
 
+  virtual_machine_interface_id = netbox_interface.eth0.id
 
   tags = toset(var.tags)
+}
+
+resource "netbox_primary_ip" "supernode" {
+  ip_address_id      = netbox_ip_address.management_ipv6.id
+  virtual_machine_id = netbox_virtual_machine.supernode.id
 }

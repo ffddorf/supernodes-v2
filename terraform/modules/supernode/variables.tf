@@ -58,3 +58,15 @@ variable "vm_ssh_keys" {
   type        = list(string)
   description = "Public keys to grant access to"
 }
+
+variable "vm_cluster_name" {
+  type        = string
+  description = "Cluster to assign the VM to"
+  default     = "pve1"
+}
+
+variable "vm_role_name" {
+  type        = string
+  description = "Name of an existing Netbox device role to assign to the VM"
+  default     = "Supernode v2"
+}
