@@ -24,6 +24,29 @@ provider "registry.terraform.io/e-breuninger/netbox" {
   ]
 }
 
+provider "registry.terraform.io/ffddorf/iphelpers" {
+  version     = "1.0.0"
+  constraints = "~> 1.0.0"
+  hashes = [
+    "h1:lOm9S1tvKHX+h8ahYH/mq4RmHZqFrOknG1E5P25VrDk=",
+    "zh:0c8c0f62d70aed6bd160aa3dc371ba09f614c24ca31361ca5643da690785f1a1",
+    "zh:409da07d45c56d39aec3395b37738c9287ab01b9bf39ec2eb96b781a35b56e94",
+    "zh:41acca7af903afcf3f1ce2c63835d3c616fadc5acab11b89380e89ba482ad6ba",
+    "zh:42a6354bde35450a72a4ec50a669675fd1c24b118da8ce2c5c70060e4ab17f14",
+    "zh:4a59c564da4d49df2b9f5b6bbd71c5d30b2f29f56a3c0c1c20add888209ce0ef",
+    "zh:693114f69a794820fffe1db9039691bbe91321cc1223413b9c15b3dce4f39fdb",
+    "zh:715baa3b349972e462ffafdce1ff161ff7164a054fd35f3d36c64f67a26bd119",
+    "zh:729a80591ea58c0819b84b4acf33479f558ba89fd10fb553450e1a6e0d475736",
+    "zh:74a0cbabe194485b86947b043c547452db6f73ac34479c3e469a97041d0511e0",
+    "zh:74cbec9a7e58407026bae7a0af481864e39aa543235e40742bf8d48b26b9bf08",
+    "zh:80c340fc240029d33632d4e51170d3ebc2fcfe43960fdf4e7113f5d1587c7031",
+    "zh:94894e330276b90db2ba5e5816984b47a4c9c5306322693e69b76f0d08e5fe01",
+    "zh:a33d53acc640dc93b81352ba633cf392bc8c7614a72d320d59d3dcdb22d73fc4",
+    "zh:d808c2afe57a0cda4383d8c9cb1444171fa6d0aa8badf219fda6b0ae8af36286",
+    "zh:e8efdb75df6346d4df0cc24344b614dd4a6db422977012257a02d4f1982b533a",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/http" {
   version = "3.4.1"
   hashes = [
