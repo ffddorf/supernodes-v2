@@ -85,10 +85,6 @@ resource "netbox_virtual_machine" "supernode" {
   memory_mb    = proxmox_vm_qemu.supernode.memory
   disk_size_gb = local.disk_size_bytes / local.size_constants.G
 
-  custom_fields = {
-    proxmox_vm_id = proxmox_vm_qemu.supernode.vmid
-  }
-
   tags = toset(var.tags)
 
   lifecycle {
