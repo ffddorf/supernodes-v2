@@ -76,6 +76,7 @@ locals {
 }
 
 resource "netbox_virtual_machine" "supernode" {
+  site_id    = data.netbox_cluster.vm_cluster.site_id
   cluster_id = data.netbox_cluster.vm_cluster.id
   name       = local.vm_name
   status     = "staged"
