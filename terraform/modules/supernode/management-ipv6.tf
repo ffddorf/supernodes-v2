@@ -20,5 +20,6 @@ resource "netbox_ip_address" "management_ipv6" {
 
 resource "netbox_primary_ip" "supernode" {
   ip_address_id      = netbox_ip_address.management_ipv6.id
+  ip_address_version = 6
   virtual_machine_id = netbox_virtual_machine.supernode.id
 }
