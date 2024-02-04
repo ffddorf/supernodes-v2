@@ -91,6 +91,7 @@ resource "netbox_virtual_machine" "supernode" {
   lifecycle {
     ignore_changes = [
       status,
+      custom_fields,
     ]
   }
 }
