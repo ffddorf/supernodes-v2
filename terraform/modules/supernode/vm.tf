@@ -15,10 +15,15 @@ resource "proxmox_vm_qemu" "supernode" {
   sockets = 1
   memory  = 1024
 
-  disk {
-    type    = "scsi"
-    storage = var.vm_storage_pool_name
-    size    = "4G"
+  disks {
+    virtio {
+      virtio0 {
+        disk {
+          storage = var.vm_storage_pool_name
+          size    = "4G"
+        }
+      }
+    }
   }
 
   scsihw   = "virtio-scsi-pci"
@@ -40,7 +45,7 @@ resource "proxmox_vm_qemu" "supernode" {
     bridge = "vmbr0"
   }
 
-  cloudinit_cdrom_storage = var.vm_storage_pool_name
+  # cloudinit_cdrom_storage = var.vm_storage_pool_name
 
   agent     = 1
   os_type   = "cloud-init"
@@ -71,8 +76,8 @@ locals {
     M = 1024 * 1024
     K = 1024
   }
-  disk_size_parts = regex("^([0-9]+)([GMK])$", proxmox_vm_qemu.supernode.disk[0].size)
-  disk_size_bytes = parseint(local.disk_size_parts[0], 10) * local.size_constants[local.disk_size_parts[1]]
+  # disk_size_parts = regex("^([0-9]+)([GMK])$", proxmox_vm_qemu.supernode.disks[0].virtio[0].virtio0[0].disk[0].size)
+  # disk_size_bytes = parseint(local.disk_size_parts[0], 10) * local.size_constants[local.disk_size_parts[1]]
 }
 
 resource "netbox_virtual_machine" "supernode" {
@@ -82,9 +87,9 @@ resource "netbox_virtual_machine" "supernode" {
   status     = "staged"
   role_id    = data.netbox_device_role.supernode.id
 
-  vcpus        = proxmox_vm_qemu.supernode.cores
-  memory_mb    = proxmox_vm_qemu.supernode.memory
-  disk_size_gb = local.disk_size_bytes / local.size_constants.G
+  vcpus     = proxmox_vm_qemu.supernode.cores
+  memory_mb = proxmox_vm_qemu.supernode.memory
+  # disk_size_gb = local.disk_size_bytes / local.size_constants.G
 
   tags = toset(var.tags)
 
