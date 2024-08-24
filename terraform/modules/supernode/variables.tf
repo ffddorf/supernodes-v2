@@ -9,31 +9,36 @@ variable "tags" {
   default     = []
 }
 
-variable "prefix_ipv4_id" {
+variable "public_ipv4_prefix_id" {
   type        = string
-  description = "ID of the Supernode IPv4 prefix"
+  description = "ID of the prefix to assign a public IPv4 address from"
 }
 
-variable "prefix_ipv6_id" {
+variable "domain_ipv4_id" {
   type        = string
-  description = "ID of the Supernode IPv6 prefix"
+  description = "ID of the Domain IPv4 prefix"
 }
 
-variable "loopback_prefix_ipv6_id" {
+variable "domain_ipv6_id" {
   type        = string
-  description = "ID of the Loopback Supernode IPv6 prefix"
+  description = "ID of the Domain IPv6 prefix"
+}
+
+variable "domain_vrf_id" {
+  type        = string
+  description = "ID of the VRF for this domain"
 }
 
 variable "management_prefix_ipv6" {
   type        = string
   description = "Prefix to use for the statically assigned IPv6 management address"
-  default     = "2001:678:b7c:201::/64"
+  default     = "2001:678:b7c:205::/64"
 }
 
 variable "vm_target_node" {
   type        = string
   description = "Node to launch VM on"
-  default     = "pm2"
+  default     = "pm4"
 }
 
 variable "vm_template_name" {
@@ -51,7 +56,7 @@ variable "vm_storage_pool_name" {
 variable "vm_resource_pool" {
   type        = string
   description = "Proxmox pool to create VM in"
-  default     = "Supernodes2.0"
+  default     = "supernodes-v2"
 }
 
 variable "vm_ssh_keys" {

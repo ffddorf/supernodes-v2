@@ -1,7 +1,11 @@
 variable "domain_name" {
   type        = string
   description = "Name of the supernode domain"
-  default     = "dev"
+}
+
+variable "domain_id" {
+  type        = number
+  description = "Number of this domain (used in network addressing)"
 }
 
 variable "tags" {
@@ -13,7 +17,7 @@ variable "tags" {
 variable "supernode_count" {
   type        = number
   description = "Number of supernodes for this domain"
-  default     = 2
+  default     = 1
 }
 
 variable "primary_prefix_ipv4" {
@@ -24,8 +28,8 @@ variable "primary_prefix_ipv4" {
 
 variable "primary_prefix_ipv6" {
   type        = string
-  description = "Prefix to issue primary IPv6 addresses from"
-  default     = "2001:678:b7c::/48"
+  description = "Prefix to issue IPv6 subnet from"
+  default     = "2001:678:b7c:700::/56"
 }
 
 variable "ssh_github_users" {

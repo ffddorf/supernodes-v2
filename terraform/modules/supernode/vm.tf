@@ -1,5 +1,7 @@
 locals {
   vm_name = "supernode-${var.supernode_name}"
+  cores   = 2
+  memory  = 1024
 }
 
 resource "proxmox_vm_qemu" "supernode" {
@@ -11,19 +13,32 @@ resource "proxmox_vm_qemu" "supernode" {
   clone      = var.vm_template_name
   full_clone = false
 
-  cores   = 2
+  cores   = local.cores
   sockets = 1
-  memory  = 1024
+  memory  = local.memory
 
-  disk {
-    type    = "scsi"
-    storage = var.vm_storage_pool_name
-    size    = "4G"
+  disks {
+    ide {
+      ide2 {
+        cloudinit {
+          storage = "system"
+        }
+      }
+    }
+
+    scsi {
+      scsi0 {
+        disk {
+          size    = "10G"
+          storage = "system"
+        }
+      }
+    }
   }
 
   scsihw   = "virtio-scsi-pci"
   boot     = "c"
-  bootdisk = "virtio0"
+  bootdisk = "scsi0"
 
   vga {
     type   = "serial0"
@@ -36,15 +51,15 @@ resource "proxmox_vm_qemu" "supernode" {
   }
 
   network {
-    model  = "virtio"
-    bridge = "vmbr0"
+    model   = "virtio"
+    bridge  = "vmbr0"
+    tag     = 5
+    macaddr = macaddress.eth0.address
   }
-
-  cloudinit_cdrom_storage = var.vm_storage_pool_name
 
   agent     = 1
   os_type   = "cloud-init"
-  ipconfig0 = "ip=dhcp,ip6=auto"
+  ipconfig0 = "ip=${netbox_available_ip_address.primary_ipv4.ip_address},gw=0.0.0.0,ip6=auto"
   ciuser    = "admin"
   sshkeys   = join("\n", var.vm_ssh_keys)
 
@@ -53,6 +68,7 @@ resource "proxmox_vm_qemu" "supernode" {
   lifecycle {
     ignore_changes = [
       define_connection_info,
+      clone,
     ]
   }
 }
@@ -65,16 +81,6 @@ data "netbox_device_role" "supernode" {
   name = var.vm_role_name
 }
 
-locals {
-  size_constants = {
-    G = 1024 * 1024 * 1024
-    M = 1024 * 1024
-    K = 1024
-  }
-  disk_size_parts = regex("^([0-9]+)([GMK])$", proxmox_vm_qemu.supernode.disk[0].size)
-  disk_size_bytes = parseint(local.disk_size_parts[0], 10) * local.size_constants[local.disk_size_parts[1]]
-}
-
 resource "netbox_virtual_machine" "supernode" {
   site_id    = data.netbox_cluster.vm_cluster.site_id
   cluster_id = data.netbox_cluster.vm_cluster.id
@@ -82,9 +88,8 @@ resource "netbox_virtual_machine" "supernode" {
   status     = "staged"
   role_id    = data.netbox_device_role.supernode.id
 
-  vcpus        = proxmox_vm_qemu.supernode.cores
-  memory_mb    = proxmox_vm_qemu.supernode.memory
-  disk_size_gb = local.disk_size_bytes / local.size_constants.G
+  vcpus     = local.cores
+  memory_mb = local.memory
 
   tags = toset(var.tags)
 
@@ -94,13 +99,4 @@ resource "netbox_virtual_machine" "supernode" {
       custom_fields,
     ]
   }
-}
-
-resource "netbox_interface" "eth0" {
-  virtual_machine_id = netbox_virtual_machine.supernode.id
-
-  name        = "eth0"
-  mac_address = proxmox_vm_qemu.supernode.network[0].macaddr
-
-  tags = toset(var.tags)
 }

@@ -1,5 +1,4 @@
-# TODO: use stable address
-router id {{ ansible_default_ipv4.address }};
+router id {{ service_ipv4_address }};
 
 log syslog all;
 
@@ -12,7 +11,7 @@ protocol static service_v4 {
 protocol static service_v6 {
   ipv6;
 
-  route {{ service_ipv6_address }} blackhole;
+  route {{ domain_ipv6_subnet }} blackhole;
 }
 
 define ffddorf_asn = 207871;
@@ -33,14 +32,14 @@ template bgp ffddorf {
 
 filter service {
   if net ~ {{ service_ipv4_address }} then accept;
-  if net ~ {{ service_ipv6_address }} then accept;
+  if net ~ {{ domain_ipv6_subnet }} then accept;
   reject;
 }
 
 {% for router in routers %}
 protocol bgp service_v4_{{ router.name | lower }} from ffddorf {
 	description "Service Address Announcement IPv4 to {{ router.name }}";
-	local {{ ansible_default_ipv4.address }};
+	local {{ service_ipv4_address }};
 	neighbor {{ router.bgp_peer_ipv4_address }} as ffddorf_asn;
 
 	ipv4 {

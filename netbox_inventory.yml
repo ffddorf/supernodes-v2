@@ -2,8 +2,8 @@ plugin: netbox.netbox.nb_inventory
 api_endpoint: https://netbox.freifunk-duesseldorf.de/
 validate_certs: True
 config_context: True
-flatten_config_context: True
 interfaces: True
+fetch_all: False
 
 query_filters:
   - role: supernode-v2
