@@ -59,7 +59,7 @@ resource "proxmox_vm_qemu" "supernode" {
 
   agent     = 1
   os_type   = "cloud-init"
-  ipconfig0 = "ip=${netbox_available_ip_address.primary_ipv4.ip_address},gw=0.0.0.0,ip6=auto"
+  ipconfig0 = "ip=${netbox_available_prefix.primary_ipv4.prefix},gw=0.0.0.0,ip6=auto"
   ciuser    = "admin"
   sshkeys   = join("\n", var.vm_ssh_keys)
 
