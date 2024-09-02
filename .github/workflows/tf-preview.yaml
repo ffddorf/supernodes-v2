@@ -1,5 +1,4 @@
-name: Speculative Run
-
+name: Terraform
 on:
   workflow_dispatch:
     inputs:
@@ -7,25 +6,27 @@ on:
         description: "URL from which to download the workspace"
         required: true
         type: string
-
 jobs:
   plan:
-    name: Plan
+    name: Speculative Plan
     runs-on: ubuntu-22.04
     env:
+      # renovate: datasource=github-releases depName=hashicorp/terraform
+      TERRAFORM_VERSION: "1.9.3"
+
       TF_HTTP_PASSWORD: ${{ github.token }}
       TF_IN_AUTOMATION: "true"
-      TF_CLI_ARGS: "-input=false"
-      TF_LOG: "debug"
+      TF_CLI_ARGS: -input=false
+
       NETBOX_API_TOKEN: ${{ secrets.NETBOX_API_TOKEN }}
       PM_API_TOKEN_ID: ${{ secrets.PM_API_TOKEN_ID }}
       PM_API_TOKEN_SECRET: ${{ secrets.PM_API_TOKEN_SECRET }}
     steps:
       - name: Download Workspace
         run: |
-          curl ${{ inputs.workspace_transfer_url }} --fail --silent | tar -xzf -
+          curl ${{ inputs.workspace_transfer_url }} --user github_pat:${TF_HTTP_PASSWORD} --fail --silent | tar -xzf -
       - uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.6.6"
+          terraform_version: ${TERRAFORM_VERSION}
       - run: terraform init
       - run: terraform plan
