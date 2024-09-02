@@ -80,11 +80,11 @@ jobs:
           github-token: ${{ github.token }}
           script: |
             const fs = require('fs').promises
-            const plan = JSON.parse(await fs.readFile('tfplan.json', 'utf-8'))
-            const humanSummary = await fs.readFile('summary.txt', 'utf-8')
+            const plan = JSON.parse(await fs.readFile('terraform/tfplan.json', 'utf-8'))
+            const humanSummary = await fs.readFile('terraform/summary.txt', 'utf-8')
             let applyLog;
             try {
-              applyLog = await fs.readFile('apply.log', 'utf-8')
+              applyLog = await fs.readFile('terraform/apply.log', 'utf-8')
             } catch {}
 
             function countActions(plan, type) {
@@ -101,7 +101,7 @@ jobs:
                 ? `${createCount} added, ${updateCount} changed, ${deleteCount} destroyed`
                 : `${createCount} to add, ${updateCount} to change, ${deleteCount} to destroy`
               )
-            await fs.writeFile("title.txt", title)
+            await fs.writeFile("terraform/title.txt", title)
 
             const codefence = "```"
             const summary = `
@@ -137,8 +137,8 @@ jobs:
         with:
           name: tf-summary-${{ matrix.domain }}
           path: |
-            summary.txt
-            title.txt
+            terraform/summary.txt
+            terraform/title.txt
 
   summary:
     name: Summary
