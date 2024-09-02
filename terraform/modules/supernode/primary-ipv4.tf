@@ -1,6 +1,23 @@
+data "netbox_site" "local" {
+  name = var.site_name
+}
+
+data "netbox_vlan_group" "core" {
+  name       = var.vlan_group_name
+  scope_type = "dcim.site"
+  scope_id   = data.netbox_site.local.id
+}
+
+data "netbox_vlan" "public_vms" {
+  group_id = data.netbox_vlan_group.core.id
+  vid      = var.vlan_id
+}
+
 resource "netbox_available_prefix" "primary_ipv4" {
   description = "Primary Address ${var.supernode_name}"
   status      = "active"
+  site_id     = data.netbox_site.local.id
+  vlan_id     = data.netbox_vlan.public_vms.id
 
   parent_prefix_id = var.public_ipv4_prefix_id
   prefix_length    = 32

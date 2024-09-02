@@ -14,6 +14,24 @@ variable "public_ipv4_prefix_id" {
   description = "ID of the prefix to assign a public IPv4 address from"
 }
 
+variable "site_name" {
+  type        = string
+  description = "Name of the site the supernodes are deployed to"
+  default     = "DUS2"
+}
+
+variable "vlan_group_name" {
+  type        = string
+  description = "Name of the VLAN group to use for the VM"
+  default     = "DUS2 Core"
+}
+
+variable "vlan_id" {
+  type        = number
+  description = "VLAN ID to place the VM and associated addressing resources in"
+  default     = 5
+}
+
 variable "domain_ipv4_id" {
   type        = string
   description = "ID of the Domain IPv4 prefix"
@@ -27,12 +45,6 @@ variable "domain_ipv6_id" {
 variable "domain_vrf_id" {
   type        = string
   description = "ID of the VRF for this domain"
-}
-
-variable "management_prefix_ipv6" {
-  type        = string
-  description = "Prefix to use for the statically assigned IPv6 management address"
-  default     = "2001:678:b7c:205::/64"
 }
 
 variable "vm_target_node" {

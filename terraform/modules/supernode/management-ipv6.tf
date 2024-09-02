@@ -1,5 +1,6 @@
 data "netbox_prefix" "management_net" {
-  prefix = var.management_prefix_ipv6
+  vlan_id = data.netbox_vlan.public_vms.id
+  family  = 6
 }
 
 data "iphelpers_eui64_address" "supernode_management" {

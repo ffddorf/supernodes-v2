@@ -53,7 +53,7 @@ resource "proxmox_vm_qemu" "supernode" {
   network {
     model   = "virtio"
     bridge  = "vmbr0"
-    tag     = 5
+    tag     = var.vlan_id
     macaddr = macaddress.eth0.address
   }
 
