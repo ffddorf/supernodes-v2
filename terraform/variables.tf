@@ -17,7 +17,7 @@ variable "tags" {
 variable "supernode_count" {
   type        = number
   description = "Number of supernodes for this domain"
-  default     = 2
+  default     = 1
 }
 
 variable "primary_prefix_ipv4" {

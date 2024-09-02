@@ -38,7 +38,7 @@ variable "management_prefix_ipv6" {
 variable "vm_target_node" {
   type        = string
   description = "Node to launch VM on"
-  default     = "pm2"
+  default     = "pm4"
 }
 
 variable "vm_template_name" {
@@ -56,7 +56,7 @@ variable "vm_storage_pool_name" {
 variable "vm_resource_pool" {
   type        = string
   description = "Proxmox pool to create VM in"
-  default     = "Supernodes2.0"
+  default     = "supernodes-v2"
 }
 
 variable "vm_ssh_keys" {
