@@ -1,4 +1,8 @@
 ---
+- name: Refresh package sources
+  apt:
+    update_cache: true
+
 - name: Ensure full kernel
   package:
     name: linux-image-amd64
@@ -12,3 +16,6 @@
       - linux-image-*-cloud-amd64
     state: absent
   notify: reboot
+
+- name: Flush handlers
+  meta: flush_handlers
