@@ -1,20 +1,12 @@
-resource "netbox_available_prefix" "primary_ipv6" {
-  description = "Primary Address ${var.supernode_name}"
-  status      = "active"
-
-  parent_prefix_id = var.loopback_prefix_ipv6_id
-  prefix_length    = 128
-
-  tags = toset(var.tags)
-}
-
 resource "netbox_available_ip_address" "primary_ipv6" {
   status = "active"
 
   description = "Primary Address ${var.supernode_name}"
 
-  prefix_id = netbox_available_prefix.primary_ipv6.id
-  // TODO: set interface_id
+  prefix_id = var.domain_ipv6_id
+
+  object_type  = "virtualization.vminterface"
+  interface_id = netbox_interface.br0.id
 
   tags = toset(var.tags)
 }

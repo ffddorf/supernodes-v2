@@ -2,23 +2,30 @@ data "netbox_prefix" "primary_ipv4" {
   prefix = var.primary_prefix_ipv4
 }
 
-data "netbox_prefix" "primary_ipv6" {
+data "netbox_prefix" "ipv6_container" {
   prefix = var.primary_prefix_ipv6
 }
 
-resource "netbox_available_prefix" "domain_ipv6" {
-  description      = "Supernode IPv6 addresses ${var.domain_name}"
-  prefix_length    = 56
-  status           = "reserved"
-  parent_prefix_id = data.netbox_prefix.primary_ipv6.id
+resource "netbox_prefix" "domain_ipv6" {
+  prefix      = cidrsubnet(data.netbox_prefix.ipv6_container.prefix, 8, var.domain_id)
+  description = "Supernode IPv6 addresses ${var.domain_name}"
+  status      = "active"
 
   tags = toset(var.tags)
 }
 
-resource "netbox_prefix" "loopback_ipv6" {
-  prefix      = cidrsubnet(netbox_available_prefix.domain_ipv6.prefix, 8, 0)
-  description = "Supernode IPv6 loopback addresses ${var.domain_name}"
-  status      = "reserved"
+output "domain_ipv6_prefix" {
+  value = netbox_prefix.domain_ipv6.prefix
+}
 
-  tags = toset(var.tags)
+data "netbox_vrf" "mesh" {
+  name = "Mesh"
+}
+
+resource "netbox_prefix" "domain_ipv4" {
+  prefix      = cidrsubnet("10.0.0.0/8", 8, var.domain_id)
+  description = "Supernode client subnet ${var.domain_name}"
+  status      = "active"
+
+  vrf_id = data.netbox_vrf.mesh.id
 }

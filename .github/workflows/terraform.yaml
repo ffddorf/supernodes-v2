@@ -9,17 +9,21 @@ jobs:
   run:
     name: Run
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        domain: ["dev"]
     concurrency:
-      group: terraform
+      group: terraform-${{ matrix.domain }}
       cancel-in-progress: false
     permissions:
       contents: read
       pull-requests: write
       checks: write
     env:
+      TF_HTTP_USERNAME: ffddorf/supernodes-v2@${{ matrix.domain }}
       TF_HTTP_PASSWORD: ${{ github.token }}
       TF_IN_AUTOMATION: "true"
-      TF_CLI_ARGS: "-input=false"
+      TF_CLI_ARGS: "-input=false -var-file=domains/${{ matrix.domain }}.tfvars"
       NETBOX_API_TOKEN: ${{ secrets.NETBOX_API_TOKEN }}
       PM_API_TOKEN_ID: ${{ secrets.PM_API_TOKEN_ID }}
       PM_API_TOKEN_SECRET: ${{ secrets.PM_API_TOKEN_SECRET }}
