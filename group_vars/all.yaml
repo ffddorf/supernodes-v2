@@ -18,3 +18,24 @@ gateway_ipv4_address: >-
       ansible.utils.ipaddr(client_ipv4_container) |
       first
   }}
+gateway_ipv6_address: >-
+  {{ client_bridge_interface.ip_addresses |
+      map(attribute='address') |
+      ansible.utils.ipv6 |
+      ansible.utils.ipaddr('public') |
+      first
+  }}
+
+wan_interface: "{{ interfaces | selectattr('name', 'equalto', 'eth0') | first }}"
+service_ipv4_address: >-
+  {{ wan_interface.ip_addresses |
+      map(attribute='address') |
+      ansible.utils.ipv4 |
+      ansible.utils.ipaddr('public') |
+      first
+  }}
+
+loopback_interface: "{{ interfaces | selectattr('name', 'equalto', 'lo') | first }}"
+service_ipv6_address: "{{ gateway_ipv6_address }}"
+
+domain_ipv6_subnet: "{{ gateway_ipv6_address | ipaddr('net') }}"
