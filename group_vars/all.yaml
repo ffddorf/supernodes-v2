@@ -38,4 +38,4 @@ service_ipv4_address: >-
 loopback_interface: "{{ interfaces | selectattr('name', 'equalto', 'lo') | first }}"
 service_ipv6_address: "{{ gateway_ipv6_address }}"
 
-domain_ipv6_subnet: "{{ gateway_ipv6_address | ipaddr('net') }}"
+domain_ipv6_subnet: "{{ gateway_ipv6_address | ansible.utils.ipaddr('network/prefix') }}"

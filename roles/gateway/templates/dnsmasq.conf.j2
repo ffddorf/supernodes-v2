@@ -1,16 +1,16 @@
 interface=br0
 except-interface=lo
-listen-address={{ gateway_ipv4_address | ipaddr('address') }}
-listen-address={{ gateway_ipv6_address | ipaddr('address') }}
+listen-address={{ gateway_ipv4_address | ansible.utils.ipaddr('address') }}
+listen-address={{ gateway_ipv6_address | ansible.utils.ipaddr('address') }}
 bind-interfaces
 
 cache-size=10000
 
 no-resolv
-server=193.110.81.0@{{ service_ipv4_address | ipaddr('address') }}
-server=185.253.5.0@{{ service_ipv4_address | ipaddr('address') }}
-server=2a0f:fc80::@{{ service_ipv6_address | ipaddr('address') }}
-server=2a0f:fc81::@{{ service_ipv6_address | ipaddr('address') }}
+server=193.110.81.0@{{ service_ipv4_address | ansible.utils.ipaddr('address') }}
+server=185.253.5.0@{{ service_ipv4_address | ansible.utils.ipaddr('address') }}
+server=2a0f:fc80::@{{ service_ipv6_address | ansible.utils.ipaddr('address') }}
+server=2a0f:fc81::@{{ service_ipv6_address | ansible.utils.ipaddr('address') }}
 all-servers
 neg-ttl=5
 

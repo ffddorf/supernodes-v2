@@ -2,6 +2,6 @@
 Name=lo
 
 [Network]
-{%- for addr in loopback_interface.ip_addresses %}
+{% for addr in loopback_interface.ip_addresses %}
 Address={{ addr }}
-{%- endfor %}
+{% endfor %}

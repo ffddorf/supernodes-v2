@@ -1,4 +1,4 @@
-router id {{ service_ipv4_address }};
+router id {{ service_ipv4_address | ansible.utils.ipaddr('address') }};
 
 log syslog all;
 
@@ -36,10 +36,26 @@ filter service {
   reject;
 }
 
+define local_ipv4 = {{
+  wan_interface.ip_addresses |
+  map(attribute='address') |
+  ansible.utils.ipv4 |
+  first |
+  ansible.utils.ipaddr('address')
+}};
+
+define local_ipv6 = {{
+  wan_interface.ip_addresses |
+  map(attribute='address') |
+  ansible.utils.ipv6 |
+  first |
+  ansible.utils.ipaddr('address')
+}};
+
 {% for router in routers %}
 protocol bgp service_v4_{{ router.name | lower }} from ffddorf {
 	description "Service Address Announcement IPv4 to {{ router.name }}";
-	local {{ service_ipv4_address }};
+	local local_ipv4;
 	neighbor {{ router.bgp_peer_ipv4_address }} as ffddorf_asn;
 
 	ipv4 {
@@ -49,7 +65,7 @@ protocol bgp service_v4_{{ router.name | lower }} from ffddorf {
 
 protocol bgp service_v6_{{ router.name | lower }} from ffddorf {
 	description "Service Address Announcement IPv6 to {{ router.name }}";
-	local {{ ansible_default_ipv6.address }};
+	local local_ipv6;
 	neighbor {{ router.bgp_peer_ipv6_address }} as ffddorf_asn;
 
 	ipv6 {
