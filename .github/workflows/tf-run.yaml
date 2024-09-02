@@ -215,9 +215,9 @@ jobs:
 
               ${codefence}
               ${plan.trim("\n")}
-              ${codefence}`
+              ${codefence}
 
-              </details>
+              </details>`
             }
 
             github.rest.issues.createComment({
