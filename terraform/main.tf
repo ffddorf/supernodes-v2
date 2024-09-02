@@ -1,6 +1,3 @@
-resource "null_resource" "test" {
-}
-
 module "supernode" {
   count = var.supernode_count
 
