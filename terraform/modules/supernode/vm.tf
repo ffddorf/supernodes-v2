@@ -51,8 +51,9 @@ resource "proxmox_vm_qemu" "supernode" {
   }
 
   network {
-    model  = "virtio"
-    bridge = "vmbr0"
+    model   = "virtio"
+    bridge  = "vmbr0"
+    macaddr = macaddress.eth0.address
   }
 
   agent     = 1
@@ -97,13 +98,4 @@ resource "netbox_virtual_machine" "supernode" {
       custom_fields,
     ]
   }
-}
-
-resource "netbox_interface" "eth0" {
-  virtual_machine_id = netbox_virtual_machine.supernode.id
-
-  name        = "eth0"
-  mac_address = proxmox_vm_qemu.supernode.network[0].macaddr
-
-  tags = toset(var.tags)
 }

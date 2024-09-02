@@ -3,7 +3,7 @@ data "netbox_prefix" "management_net" {
 }
 
 data "iphelpers_eui64_address" "supernode_management" {
-  mac_address = proxmox_vm_qemu.supernode.network[0].macaddr
+  mac_address = macaddress.eth0.address
   prefix      = trimsuffix(data.netbox_prefix.management_net.prefix, "/64")
 }
 
