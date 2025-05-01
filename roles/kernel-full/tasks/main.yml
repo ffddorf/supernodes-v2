@@ -3,17 +3,24 @@
   apt:
     update_cache: true
 
+- set_fact:
+    arch_suffix: amd64
+  when: ansible_architecture == "x86_64"
+- set_fact:
+    arch_suffix: arm64
+  when: ansible_architecture == "aarch64"
+
 - name: Ensure full kernel
   package:
-    name: linux-image-amd64
+    name: linux-image-{{ arch_suffix }}
     state: present
   notify: reboot
 
 - name: Remove cloud kernel
   package:
     name:
-      - linux-image-cloud-amd64
-      - linux-image-*-cloud-amd64
+      - linux-image-cloud-{{ arch_suffix }}
+      - linux-image-*-cloud-{{ arch_suffix }}
     state: absent
   notify: reboot
 
