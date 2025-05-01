@@ -11,5 +11,8 @@ Vagrant.configure('2') do |config|
         primary_ipv4_address: '172.16.0.1/32',
       },
     }
+    ansible.groups = {
+      'vagrant' => ['default']
+    }
   end
 end

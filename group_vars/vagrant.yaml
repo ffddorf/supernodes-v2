@@ -1,0 +1,14 @@
+# mock facts for vagrant
+# usually provided by the netbox inventory
+interfaces:
+  - name: br0
+    ip_addresses:
+      - address: "10.255.0.1/16"
+      - address: "2001:678:b7c:70c::1/64"
+  - name: eth0
+    ip_addresses:
+      - address: "45.151.166.57/32"
+      - address: "2001:678:b7c:205:be24:11ff:fecc:2bc3/64"
+  - name: lo
+    ip_addresses:
+      - address: "2001:0db8::1312/128"
