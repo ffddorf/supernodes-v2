@@ -1,0 +1,90 @@
+uci set network.lan.proto='dhcp'
+
+uci set fastd.meshvpn=fastd
+uci set fastd.meshvpn.enabled='1'
+uci set fastd.meshvpn.syslog_level='debug'
+uci set fastd.meshvpn.method='null@l2tp'
+uci set fastd.meshvpn.offload_l2tp='1'
+uci set fastd.meshvpn.mtu='1280'
+uci set fastd.meshvpn.mode='multitap'
+uci set fastd.meshvpn.interface='mesh-vpn'
+uci set fastd.meshvpn.secret='886d60b2ed4e50f2d4b3b4d0f316d33784608b1f66d1842e4c3aa40251321b44'
+uci set fastd.meshvpn.forward='0'
+uci set fastd.meshvpn.persist_interface='0'
+uci set fastd.supernode0=peer
+uci set fastd.supernode0.enabled='1'
+uci set fastd.supernode0.net='meshvpn'
+uci set fastd.supernode0.key='b3d4888c42fe384f5e3a5481b220ff04d27b72975631b9b48f2cbf2b1541e379'
+uci set fastd.supernode0.remote='192.168.68.2:10000'
+
+
+--- supernode0
+
+uci set network.bat0='interface'
+uci set network.bat0.proto='batadv'
+uci set network.bat0.routing_algo='BATMAN_IV'
+uci set network.bat0.gw_mode='client'
+
+DEVNAME=$(uci add network device)
+uci set network.${DEVNAME}.type='bridge'
+uci set network.${DEVNAME}.name='br-client'
+uci add_list network.${DEVNAME}.ports='bat0'
+uci set network.client6='interface'
+uci set network.client6.device='br-client'
+uci set network.client6.proto='dhcpv6'
+uci set network.client6.reqprefix=no
+uci set network.client6.auto='1'
+uci set network.client6.ra_holdoff='30'
+uci set network.client6.ipv6='1'
+uci set network.client6.keep_ra_dnslifetime='1'
+uci set network.client6.sourcefilter='0'
+uci set network.client6.query_interval='2000'
+uci set network.client6.query_response_interval='500'
+
+
+
+uci set fastd.meshvpn=fastd
+uci set fastd.meshvpn.enabled='1'
+uci set fastd.meshvpn.syslog_level='debug'
+uci set fastd.meshvpn.method='null@l2tp'
+uci set fastd.meshvpn.offload_l2tp='1'
+uci set fastd.meshvpn.mtu='1280'
+uci set fastd.meshvpn.mode='multitap'
+uci set fastd.meshvpn.interface='mesh-vpn'
+uci set fastd.meshvpn.secret='886d60b2ed4e50f2d4b3b4d0f316d33784608b1f66d1842e4c3aa40251321b44'
+uci set fastd.meshvpn.forward='0'
+uci set fastd.meshvpn.persist_interface='0'
+uci set fastd.meshvpn.on_up='ip link set dev $INTERFACE master bat0 && ip link set dev $INTERFACE up'
+uci set fastd.supernode0=peer
+uci set fastd.supernode0.enabled='1'
+uci set fastd.supernode0.net='meshvpn'
+uci set fastd.supernode0.key='b3d4888c42fe384f5e3a5481b220ff04d27b72975631b9b48f2cbf2b1541e379'
+uci set fastd.supernode0.remote='45.151.166.57:10000'
+
+---
+sysctl:
+- net.ipv6.conf.br-client.accept_ra_defrtr=0
+- net.ipv6.conf.br-client.accept_ra=1
+- net.ipv6.conf.br-client.forwarding=0
+
+
+cat << "EOF" > /etc/udhcpc.user.d/30-wan-routing-table
+DHCPC_EVENT="${1}"
+DHCPC_IF="${interface}"
+DHCPC_GW="${router}"
+
+case ${DHCPC_EVENT} in
+(bound|renew) ;;
+(*) exit 0 ;;
+esac
+
+CLIENT_DEV="$(uci -q get network.client.device)"
+case ${DHCPC_IF} in
+($CLIENT_DEV) exit 0 ;;
+esac
+
+ip route delete default dev "${DHCPC_IF}"
+ip route add default via "${DHCPC_GW}" dev "${DHCPC_IF}" table 42
+ip route add "${DHCPC_GW}" dev "${DHCPC_IF}" table 42
+ip rule add to 45.151.166.0/24 table 42
+EOF
