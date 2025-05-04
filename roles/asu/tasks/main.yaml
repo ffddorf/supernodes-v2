@@ -1,0 +1,29 @@
+---
+- name: Install dependencies
+  package:
+    name:
+      - podman
+      - podman-compose
+    state: present
+
+- name: Start podman socket
+  service:
+    name: podman.socket
+    state: started
+    enabled: true
+
+- name: Setup volumes
+  containers.podman.podman_volume:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - asu-build-data
+    - asu-redis-data
+
+- name: Setup network
+  containers.podman.podman_network:
+    name: asu
+
+- name: Setup containers
+  containers.podman.podman_containers:
+    containers: "{{ asu_containers }}"
