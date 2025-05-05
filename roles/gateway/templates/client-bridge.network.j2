@@ -9,6 +9,7 @@ RequiredForOnline=no
 Address={{ addr.address }}
 {% endfor %}
 DHCPServer=yes
+IPv6SendRA=yes
 
 [DHCPServer]
 PoolOffset=10
@@ -16,3 +17,8 @@ PoolSize=64000
 EmitDNS=yes
 ServerAddress=10.12.255.254/16
 DNS={{ service_ipv4_address | ansible.utils.ipaddr('address') }}
+
+{% for addr in client_bridge_interface.ip_addresses | map(attribute='address') | ansible.utils.ipv6 %}
+[IPv6Prefix]
+Prefix={{ addr | ansible.utils.ipaddr('network/prefix') }}
+{% endfor %}
