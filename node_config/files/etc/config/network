@@ -1,5 +1,8 @@
 package network
 
+config interface 'wan'
+        option defaultroute '0'
+
 config interface 'bat0'
         option proto 'batadv'
         option routing_algo 'BATMAN_IV'
