@@ -1,0 +1,9 @@
+#!/bin/sh
+
+. /lib/functions/uci-defaults.sh
+
+board_config_update
+
+ucidef_set_interface "lan" protocol "none"
+
+board_config_flush
