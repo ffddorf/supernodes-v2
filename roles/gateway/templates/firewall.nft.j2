@@ -1,4 +1,5 @@
-define client_subnet = {{ gateway_ipv4_address | ansible.utils.ipaddr('network/prefix') }}
+define client_subnet4 = {{ gateway_ipv4_address | ansible.utils.ipaddr('network/prefix') }}
+define client_subnet6 = {{ domain_ipv6_subnet }}
 
 table inet filter {
   chain forward {
@@ -8,8 +9,10 @@ table inet filter {
     tcp dport 25 reject with icmp type port-unreachable
 
     # limit routed traffic to ip subnet
-    iif br0 ip saddr $client_subnet accept
-    oif br0 ip daddr $client_subnet accept
+    iif br0 ip saddr $client_subnet4 accept
+    oif br0 ip daddr $client_subnet4 accept
+    iif br0 ip6 saddr $client_subnet6 accept
+    oif br0 ip6 daddr $client_subnet6 accept
   }
 }
 
@@ -17,6 +20,6 @@ table inet nat {
   chain postrouting {
     type nat hook postrouting priority 0;
 
-    ip saddr $client_subnet oif {{ ansible_default_ipv4.interface }} snat to {{ service_ipv4_address | ansible.utils.ipaddr('address') }}
+    ip saddr $client_subnet4 oif {{ ansible_default_ipv4.interface }} snat to {{ service_ipv4_address | ansible.utils.ipaddr('address') }}
   }
 }
