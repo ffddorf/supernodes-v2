@@ -5,6 +5,9 @@ config_context: True
 interfaces: True
 fetch_all: False
 
+group_by: [device_roles]
+group_names_raw: true
+
 query_filters:
   - role: supernode-v2
   - status: staged

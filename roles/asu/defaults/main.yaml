@@ -1,0 +1,35 @@
+asu_containers:
+  - name: asu-server
+    image: "docker.io/openwrt/asu:latest"
+    command: uvicorn --host 0.0.0.0 asu.main:app
+    env:
+      REDIS_URL: "redis://redis:6379/0"
+      PUBLIC_PATH: /var/run/build
+    volumes:
+      - asu-build-data:/var/run/build:ro
+    ports:
+      - "127.0.0.1:8000:8000" # todo: use caddy
+    network: asu
+    requires:
+      - asu-redis
+
+  - name: asu-worker
+    image: "docker.io/openwrt/asu:latest"
+    command: rqworker --logging_level INFO
+    env:
+      REDIS_URL: "redis://redis:6379/0"
+      PUBLIC_PATH: /var/run/build
+    volumes:
+      - build-data:/var/run/build:ro
+      - $CONTAINER_SOCKET_PATH:$CONTAINER_SOCKET_PATH:rw
+    network: asu
+    requires:
+      - redis
+
+  - name: asu-redis
+    image: "docker.io/redis/redis-stack-server"
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data/:rw
+    network: asu
+    network-alias: redis
