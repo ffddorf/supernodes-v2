@@ -1,0 +1,30 @@
+package network
+
+config interface 'wan'
+        option defaultroute '0'
+
+config interface 'bat0'
+        option proto 'batadv'
+        option routing_algo 'BATMAN_IV'
+        option gw_mode 'client'
+
+config device
+        option type 'bridge'
+        option name 'br-client'
+        list ports 'bat0'
+
+config interface 'client6'
+        option device 'br-client'
+        option proto 'dhcpv6'
+        option reqprefix 'no'
+        option auto '1'
+        option ra_holdoff '30'
+        option ipv6 '1'
+        option keep_ra_dnslifetime '1'
+        option sourcefilter '0'
+        option query_interval '2000'
+        option query_response_interval '500'
+
+config interface 'client'
+        option device 'br-client'
+        option proto 'dhcp'

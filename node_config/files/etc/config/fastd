@@ -1,0 +1,21 @@
+package fastd
+
+config fastd 'meshvpn'
+        option enabled '1'
+        option syslog_level 'debug'
+        option method 'null@l2tp'
+        option offload_l2tp '1'
+        option mtu '1364'
+        option mode 'multitap'
+        option interface 'mesh-vpn'
+        option secret '886d60b2ed4e50f2d4b3b4d0f316d33784608b1f66d1842e4c3aa40251321b44'
+        option forward '0'
+        option persist_interface '0'
+        option on_up 'ip link set dev $INTERFACE up && ip link set dev $INTERFACE master bat0'
+        option packet_mark '42'
+
+config peer 'supernode0'
+        option enabled '1'
+        option net 'meshvpn'
+        option key 'b3d4888c42fe384f5e3a5481b220ff04d27b72975631b9b48f2cbf2b1541e379'
+        option remote '45.151.166.57:10000'

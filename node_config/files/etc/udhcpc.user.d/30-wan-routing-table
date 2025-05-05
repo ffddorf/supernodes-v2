@@ -1,0 +1,21 @@
+#!/bin/sh
+
+DHCPC_EVENT="${1}"
+DHCPC_IF="${interface}"
+DHCPC_GW="${router}"
+
+case ${DHCPC_EVENT} in
+(bound|renew) ;;
+(*) exit 0 ;;
+esac
+
+# ignore client bridge
+CLIENT_DEV="$(uci -q get network.client.device)"
+case ${DHCPC_IF} in
+("$CLIENT_DEV") exit 0 ;;
+esac
+
+ip route delete default dev "${DHCPC_IF}"
+ip route add default via "${DHCPC_GW}" dev "${DHCPC_IF}" table 42
+ip route add "${DHCPC_GW}" dev "${DHCPC_IF}" table 42
+ip rule add fwmark 42 table 42
