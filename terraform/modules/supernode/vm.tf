@@ -8,14 +8,16 @@ resource "proxmox_vm_qemu" "supernode" {
   name        = local.vm_name
   target_node = var.vm_target_node
   pool        = var.vm_resource_pool
-  desc        = "Supernode v2 - ${var.supernode_name}"
+  description = "Supernode v2 - ${var.supernode_name}"
 
   clone      = var.vm_template_name
   full_clone = false
 
-  cores   = local.cores
-  sockets = 1
-  memory  = local.memory
+  cpu {
+    cores   = local.cores
+    sockets = 1
+  }
+  memory = local.memory
 
   disks {
     ide {
@@ -51,6 +53,7 @@ resource "proxmox_vm_qemu" "supernode" {
   }
 
   network {
+    id      = 0
     model   = "virtio"
     bridge  = "vmbr0"
     tag     = var.vlan_id
