@@ -67,3 +67,33 @@ resource "netbox_ip_range" "dhcp" {
   start_address = "${local.dhcp_range_start_address}/32"
   end_address   = "${local.dhcp_range_end_address}/32"
 }
+
+resource "netbox_ip_address" "anycast" {
+  ip_address  = "${cidrhost(var.domain_ipv4_prefix, -2)}/32"
+  status      = "active"
+  role        = "anycast"
+  description = "DHCP/DNS anycast on ${var.supernode_name}"
+
+  virtual_machine_interface_id = netbox_interface.lo.id
+}
+
+resource "netbox_service" "dhcp" {
+  name               = "DHCP"
+  ports              = [67]
+  protocol           = "udp"
+  virtual_machine_id = netbox_virtual_machine.supernode.id
+
+  // todo: assign IP
+}
+
+resource "netbox_service" "domain" {
+  for_each = toset(["udp", "tcp"])
+
+  name               = "domain"
+  ports              = [53]
+  protocol           = each.key
+  virtual_machine_id = netbox_virtual_machine.supernode.id
+  description        = "Domain Name Service (${upper(each.value)})"
+
+  // todo: assign IP
+}
