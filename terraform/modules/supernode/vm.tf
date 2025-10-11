@@ -1,14 +1,14 @@
 locals {
   vm_name = "supernode-${var.supernode_name}"
   cores   = 2
-  memory  = 1024
+  memory  = 2048
 }
 
 resource "proxmox_vm_qemu" "supernode" {
-  name        = local.vm_name
-  target_node = var.vm_target_node
-  pool        = var.vm_resource_pool
-  description = "Supernode v2 - ${var.supernode_name}"
+  name         = local.vm_name
+  target_nodes = [var.vm_target_node]
+  pool         = var.vm_resource_pool
+  description  = "Supernode v2 - ${var.supernode_name}"
 
   clone      = var.vm_template_name
   full_clone = false
