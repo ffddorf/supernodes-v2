@@ -14,10 +14,9 @@ variable "public_ipv4_prefix_id" {
   description = "ID of the prefix to assign a public IPv4 address from"
 }
 
-variable "site_name" {
-  type        = string
-  description = "Name of the site the supernodes are deployed to"
-  default     = "DUS2"
+variable "site_id" {
+  type        = number
+  description = "ID of the site the supernodes are deployed to"
 }
 
 variable "vlan_group_name" {
@@ -45,6 +44,11 @@ variable "domain_ipv6_id" {
 variable "domain_vrf_id" {
   type        = string
   description = "ID of the VRF for this domain"
+}
+
+variable "batbone_vlan" {
+  type        = number
+  description = "VLAN ID of the batbone"
 }
 
 variable "vm_target_node" {
