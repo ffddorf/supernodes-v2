@@ -68,11 +68,12 @@ resource "proxmox_vm_qemu" "supernode" {
     macaddr = macaddress.vm["eth1"].address
   }
 
-  agent     = 1
-  os_type   = "cloud-init"
-  ipconfig0 = "ip=${netbox_available_prefix.primary_ipv4.prefix},gw=0.0.0.0,ip6=auto"
-  ciuser    = "admin"
-  sshkeys   = join("\n", var.vm_ssh_keys)
+  agent      = 1
+  os_type    = "cloud-init"
+  ipconfig0  = "ip=${netbox_available_prefix.primary_ipv4.prefix},gw=0.0.0.0,ip6=auto"
+  nameserver = "2001:4860:4860::8888"
+  ciuser     = "admin"
+  sshkeys    = join("\n", var.vm_ssh_keys)
 
   define_connection_info = false
 
