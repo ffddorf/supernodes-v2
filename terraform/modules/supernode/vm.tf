@@ -110,4 +110,11 @@ resource "netbox_virtual_machine" "supernode" {
       custom_fields,
     ]
   }
+
+  local_context_data = jsonencode({
+    dhcp_range = {
+      start_address = local.dhcp_range_start_address
+      end_address   = local.dhcp_range_end_address
+    }
+  })
 }
