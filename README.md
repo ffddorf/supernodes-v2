@@ -10,3 +10,8 @@
   - each supernode gets one IP from this prefix
 - Assign a management IP from the site management net
   - Statically set on the VM config
+
+## Running Ansible
+
+- Set `NETBOX_TOKEN` to your token
+- Run `ansible-playbook site.yml --diff --check`

@@ -26,7 +26,18 @@ gateway_ipv6_address: >-
       first
   }}
 
+client_ipv4_start_address_int: "{{ gateway_ipv4_address | ansible.utils.ipaddr('network') | ansible.utils.ipaddr('int') }}"
+dhcp_range_start_address_int: "{{ (config_context|first).dhcp_range.start_address|ansible.utils.ipaddr('int') }}"
+dhcp_range_end_address_int: "{{ (config_context|first).dhcp_range.end_address|ansible.utils.ipaddr('int') }}"
+dhcp_pool_offset: "{{ (dhcp_range_start_address_int|int) - (client_ipv4_start_address_int|int) - 1 }}"
+dhcp_pool_size: "{{ (dhcp_range_end_address_int|int) - (dhcp_range_start_address_int|int) }}"
+
+# Private Anycast Address in the domain used for reaching DHCP & DNS
+# todo: replace with data from netbox
+anycast_service_address: "{{ gateway_ipv4_address | ansible.utils.ipaddr('network/prefix') | ansible.utils.ipaddr('-2') }}"
+
 wan_interface: "{{ interfaces | selectattr('name', 'equalto', 'eth0') | first }}"
+# Outside IP used for connecting to the supernode from the Internet
 service_ipv4_address: >-
   {{ wan_interface.ip_addresses |
       map(attribute='address') |
@@ -39,3 +50,5 @@ loopback_interface: "{{ interfaces | selectattr('name', 'equalto', 'lo') | first
 service_ipv6_address: "{{ gateway_ipv6_address }}"
 
 domain_ipv6_subnet: "{{ gateway_ipv6_address | ansible.utils.ipaddr('network/prefix') }}"
+
+batbone_interface: "{{ interfaces | selectattr('name', 'equalto', 'eth1') | first }}"

@@ -15,26 +15,15 @@
     line: batman-adv
     create: true
 
-- name: Create Batman Interface
+- name: Configure Networking
   ansible.builtin.template:
-    src: batman.netdev.j2
-    dest: /etc/systemd/network/batman.netdev
-  notify: reload network
-
-- name: Configure Batman Interface
-  ansible.builtin.template:
-    src: batman.network.j2
-    dest: /etc/systemd/network/batman.network
-  notify: reload network
-
-- name: Create Batman Bridge
-  ansible.builtin.template:
-    src: batman-bridge.netdev.j2
-    dest: /etc/systemd/network/batman-bridge.netdev
-  notify: reload network
-
-- name: Configure Batman Bridge
-  ansible.builtin.template:
-    src: batman-bridge.network.j2
-    dest: /etc/systemd/network/batman-bridge.network
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/network/{{ item }}"
+  loop:
+    - batman.netdev
+    - batman.network
+    - batman-bridge.netdev
+    - batman-bridge.network
+    - batbone.link
+    - batbone.network
   notify: reload network

@@ -37,3 +37,15 @@ variable "ssh_github_users" {
   description = "Users to gather SSH public keys from GitHub for"
   default     = ["mraerino", "nomaster"]
 }
+
+variable "site_name" {
+  type        = string
+  description = "Name of the site the supernodes are deployed to"
+  default     = "DUS2"
+}
+
+variable "batbone_vlan_group_id" {
+  type        = number
+  description = "Netbox ID of the VLAN group used for Batbone VLANs"
+  default     = 19
+}

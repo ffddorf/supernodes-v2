@@ -12,11 +12,11 @@ DHCPServer=yes
 IPv6SendRA=yes
 
 [DHCPServer]
-PoolOffset=10
-PoolSize=64000
+PoolOffset={{ dhcp_pool_offset }}
+PoolSize={{ dhcp_pool_size }}
 EmitDNS=yes
-ServerAddress=10.12.255.254/16
-DNS={{ service_ipv4_address | ansible.utils.ipaddr('address') }}
+ServerAddress={{ anycast_service_address }}
+DNS={{ anycast_service_address | ansible.utils.ipaddr('address') }}
 
 {% for addr in client_bridge_interface.ip_addresses | map(attribute='address') | ansible.utils.ipv6 %}
 [IPv6Prefix]

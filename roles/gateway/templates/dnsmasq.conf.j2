@@ -1,6 +1,6 @@
 interface=br0
 except-interface=lo
-listen-address={{ gateway_ipv4_address | ansible.utils.ipaddr('address') }}
+listen-address={{ anycast_service_address | ansible.utils.ipaddr('address') }}
 listen-address={{ gateway_ipv6_address | ansible.utils.ipaddr('address') }}
 bind-interfaces
 

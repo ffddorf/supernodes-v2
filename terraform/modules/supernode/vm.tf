@@ -1,21 +1,23 @@
 locals {
   vm_name = "supernode-${var.supernode_name}"
   cores   = 2
-  memory  = 1024
+  memory  = 2048
 }
 
 resource "proxmox_vm_qemu" "supernode" {
-  name        = local.vm_name
-  target_node = var.vm_target_node
-  pool        = var.vm_resource_pool
-  desc        = "Supernode v2 - ${var.supernode_name}"
+  name         = local.vm_name
+  target_nodes = [var.vm_target_node]
+  pool         = var.vm_resource_pool
+  description  = "Supernode v2 - ${var.supernode_name}"
 
   clone      = var.vm_template_name
   full_clone = false
 
-  cores   = local.cores
-  sockets = 1
-  memory  = local.memory
+  cpu {
+    cores   = local.cores
+    sockets = 1
+  }
+  memory = local.memory
 
   disks {
     ide {
@@ -51,17 +53,27 @@ resource "proxmox_vm_qemu" "supernode" {
   }
 
   network {
+    id      = 0
     model   = "virtio"
     bridge  = "vmbr0"
     tag     = var.vlan_id
-    macaddr = macaddress.eth0.address
+    macaddr = macaddress.vm["eth0"].address
   }
 
-  agent     = 1
-  os_type   = "cloud-init"
-  ipconfig0 = "ip=${netbox_available_prefix.primary_ipv4.prefix},gw=0.0.0.0,ip6=auto"
-  ciuser    = "admin"
-  sshkeys   = join("\n", var.vm_ssh_keys)
+  network {
+    id      = 1
+    model   = "virtio"
+    bridge  = "vmbr0"
+    tag     = var.batbone_vlan
+    macaddr = macaddress.vm["eth1"].address
+  }
+
+  agent      = 1
+  os_type    = "cloud-init"
+  ipconfig0  = "ip=${netbox_available_prefix.primary_ipv4.prefix},gw=0.0.0.0,ip6=auto"
+  nameserver = "2001:4860:4860::8888"
+  ciuser     = "admin"
+  sshkeys    = join("\n", var.vm_ssh_keys)
 
   define_connection_info = false
 
@@ -99,4 +111,11 @@ resource "netbox_virtual_machine" "supernode" {
       custom_fields,
     ]
   }
+
+  local_context_data = jsonencode({
+    dhcp_range = {
+      start_address = local.dhcp_range_start_address
+      end_address   = local.dhcp_range_end_address
+    }
+  })
 }

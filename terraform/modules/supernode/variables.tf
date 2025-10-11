@@ -3,6 +3,11 @@ variable "supernode_name" {
   description = "Name of the Supernode"
 }
 
+variable "supernode_index" {
+  type        = number
+  description = "Index of the supernode in the domain"
+}
+
 variable "tags" {
   type        = list(string)
   description = "Tags for the resources"
@@ -14,10 +19,9 @@ variable "public_ipv4_prefix_id" {
   description = "ID of the prefix to assign a public IPv4 address from"
 }
 
-variable "site_name" {
-  type        = string
-  description = "Name of the site the supernodes are deployed to"
-  default     = "DUS2"
+variable "site_id" {
+  type        = number
+  description = "ID of the site the supernodes are deployed to"
 }
 
 variable "vlan_group_name" {
@@ -32,19 +36,30 @@ variable "vlan_id" {
   default     = 5
 }
 
-variable "domain_ipv4_id" {
-  type        = string
-  description = "ID of the Domain IPv4 prefix"
+variable "domain_dhcp_range_prefix_length_increment" {
+  type        = number
+  description = "Number of bits to add to the prefix length of the domain to get DHCP range prefixes"
+  default     = 3 // 2^3 = 8 subnets
 }
 
-variable "domain_ipv6_id" {
+variable "domain_ipv4_prefix" {
   type        = string
-  description = "ID of the Domain IPv6 prefix"
+  description = "Domain IPv4 prefix"
+}
+
+variable "domain_ipv6_prefix" {
+  type        = string
+  description = "Domain IPv6 prefix"
 }
 
 variable "domain_vrf_id" {
   type        = string
   description = "ID of the VRF for this domain"
+}
+
+variable "batbone_vlan" {
+  type        = number
+  description = "VLAN ID of the batbone"
 }
 
 variable "vm_target_node" {
