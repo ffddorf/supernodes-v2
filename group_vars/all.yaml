@@ -26,6 +26,12 @@ gateway_ipv6_address: >-
       first
   }}
 
+client_ipv4_start_address_int: "{{ gateway_ipv4_address | ansible.utils.ipaddr('network') | ansible.utils.ipaddr('int') }}"
+dhcp_range_start_address_int: "{{ (config_context|first).dhcp_range.start_address|ansible.utils.ipaddr('int') }}"
+dhcp_range_end_address_int: "{{ (config_context|first).dhcp_range.end_address|ansible.utils.ipaddr('int') }}"
+dhcp_pool_offset: "{{ (dhcp_range_start_address_int|int) - (client_ipv4_start_address_int|int) - 1 }}"
+dhcp_pool_size: "{{ (dhcp_range_end_address_int|int) - (dhcp_range_start_address_int|int) }}"
+
 wan_interface: "{{ interfaces | selectattr('name', 'equalto', 'eth0') | first }}"
 service_ipv4_address: >-
   {{ wan_interface.ip_addresses |
