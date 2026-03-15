@@ -4,5 +4,8 @@ data "http" "github_keys" {
 }
 
 locals {
-  ssh_keys = flatten([for name, resp in data.http.github_keys : split("\n", chomp(resp.response_body))])
+  ssh_keys = flatten([
+    for name, resp in data.http.github_keys :
+    split("\n", chomp(resp.response_body))
+  ])
 }

@@ -35,7 +35,7 @@ variable "primary_prefix_ipv6" {
 variable "ssh_github_users" {
   type        = list(string)
   description = "Users to gather SSH public keys from GitHub for"
-  default     = ["mraerino", "nomaster"]
+  default     = ["mraerino", "nomaster", "dagofr01"]
 }
 
 variable "site_name" {
