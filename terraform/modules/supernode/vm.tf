@@ -68,6 +68,7 @@ resource "proxmox_vm_qemu" "supernode" {
     macaddr = macaddress.vm["eth1"].address
   }
 
+  onboot     = true
   agent      = 1
   os_type    = "cloud-init"
   ipconfig0  = "ip=${netbox_available_prefix.primary_ipv4.prefix},gw=0.0.0.0,ip6=auto"
