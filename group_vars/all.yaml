@@ -6,7 +6,7 @@ routers:
     bgp_peer_ipv4_address: "45.151.166.4"
     bgp_peer_ipv6_address: "2001:678:b7c::4"
 
-fastd_secret: "c08f6ce77b2ec0d4a8f4f448c2b0c13ce7973fc7039d0fce11f89fe50433f844"
+fastd_secret_seed: "{{ (config_context|first).fastd_secret_seed }}"
 
 client_ipv4_container: "10.0.0.0/8"
 client_bridge_interface: "{{ interfaces | selectattr('name', 'equalto', 'br0') | first }}"

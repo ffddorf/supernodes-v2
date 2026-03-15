@@ -1,7 +1,9 @@
 ---
 - name: Install
   ansible.builtin.package:
-    name: fastd
+    name:
+      - fastd
+      - systemd-container # needed for `secret.yaml`
     state: present
 
 - name: Create config dir
@@ -9,12 +11,33 @@
     path: /etc/fastd/mesh/
     state: directory
 
+- name: Generate fastd secret from stable seed
+  ansible.builtin.include_tasks:
+    file: secret.yaml
+    apply:
+      check_mode: no
+
 - name: Configure server
+  vars:
+    fastd_secret: "{{ fastd_secret_gen.stdout | trim }}"
   ansible.builtin.template:
     src: fastd.conf.j2
     dest: /etc/fastd/mesh/fastd.conf
     validate: fastd --verify-config --config %s
   notify: reload fastd
+
+- name: Show pubkey
+  block:
+    - ansible.builtin.command:
+        argv:
+          - fastd
+          - --config
+          - /etc/fastd/mesh/fastd.conf
+          - --show-key
+          - --machine-readable
+      register: get_pubkey
+    - ansible.builtin.debug:
+        msg: "Pubkey: {{ get_pubkey.stdout | trim }}"
 
 - name: Enable service
   ansible.builtin.service:

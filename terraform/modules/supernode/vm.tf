@@ -99,7 +99,7 @@ data "netbox_device_role" "supernode" {
   name = var.vm_role_name
 }
 
-resource "random_bytes" "fastd_secret" {
+resource "random_bytes" "fastd_secret_seed" {
   length = 32
 }
 
@@ -127,6 +127,6 @@ resource "netbox_virtual_machine" "supernode" {
       start_address = local.dhcp_range_start_address
       end_address   = local.dhcp_range_end_address
     }
-    fastd_secret = random_bytes.fastd_secret.hex
+    fastd_secret_seed = random_bytes.fastd_secret_seed.hex
   })
 }
