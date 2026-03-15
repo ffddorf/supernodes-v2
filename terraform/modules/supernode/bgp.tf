@@ -59,7 +59,7 @@ resource "netboxbgp_session" "cores_to_node_v6" {
   local_as       = var.bgp_asn_id
   remote_as      = var.bgp_asn_id
   local_address  = each.value.v6_id
-  remote_address = netbox_available_ip_address.primary_ipv6.id
+  remote_address = netbox_ip_address.management_ipv6.id
 
   prefix_list_out = local.pfxlist_default["ipv6"]
   prefix_list_in  = netboxbgp_prefix_list.node["v6"].id
@@ -94,7 +94,7 @@ resource "netboxbgp_session" "node_to_cores_v6" {
 
   local_as       = var.bgp_asn_id
   remote_as      = var.bgp_asn_id
-  local_address  = netbox_available_ip_address.primary_ipv6.id
+  local_address  = netbox_ip_address.management_ipv6.id
   remote_address = each.value.v6_id
 
   prefix_list_out = netboxbgp_prefix_list.node["v6"].id
