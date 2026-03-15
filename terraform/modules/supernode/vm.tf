@@ -75,6 +75,12 @@ resource "proxmox_vm_qemu" "supernode" {
   ciuser             = "admin"
   sshkeys            = join("\n", var.vm_ssh_keys)
 
+  startup_shutdown {
+    order            = -1
+    shutdown_timeout = -1
+    startup_delay    = -1
+  }
+
   define_connection_info = false
 
   lifecycle {
