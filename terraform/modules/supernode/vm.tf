@@ -38,9 +38,8 @@ resource "proxmox_vm_qemu" "supernode" {
     }
   }
 
-  scsihw   = "virtio-scsi-pci"
-  boot     = "c"
-  bootdisk = "scsi0"
+  scsihw = "virtio-scsi-pci"
+  boot   = "order=scsi0"
 
   vga {
     type   = "serial0"
@@ -68,13 +67,13 @@ resource "proxmox_vm_qemu" "supernode" {
     macaddr = macaddress.vm["eth1"].address
   }
 
-  onboot     = true
-  agent      = 1
-  os_type    = "cloud-init"
-  ipconfig0  = "ip=${netbox_available_prefix.primary_ipv4.prefix},gw=0.0.0.0,ip6=auto"
-  nameserver = "2001:4860:4860::8888"
-  ciuser     = "admin"
-  sshkeys    = join("\n", var.vm_ssh_keys)
+  start_at_node_boot = true
+  agent              = 1
+  os_type            = "cloud-init"
+  ipconfig0          = "ip=${netbox_available_prefix.primary_ipv4.prefix},gw=0.0.0.0,ip6=auto"
+  nameserver         = "2001:4860:4860::8888"
+  ciuser             = "admin"
+  sshkeys            = join("\n", var.vm_ssh_keys)
 
   define_connection_info = false
 
