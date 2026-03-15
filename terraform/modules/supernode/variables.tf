@@ -65,7 +65,6 @@ variable "batbone_vlan" {
 variable "vm_target_node" {
   type        = string
   description = "Node to launch VM on"
-  default     = "pm4"
 }
 
 variable "vm_template_name" {

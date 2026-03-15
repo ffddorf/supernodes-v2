@@ -2,6 +2,21 @@ data "netbox_site" "local" {
   name = var.site_name
 }
 
+data "netbox_cluster" "pve" {
+  name = var.vm_cluster
+}
+
+data "netbox_devices" "cluster_nodes" {
+  filter {
+    name  = "cluster_id"
+    value = data.netbox_cluster.pve.cluster_id
+  }
+}
+
+locals {
+  vm_node_names = sort([for d in data.netbox_devices.cluster_nodes.devices : lower(d.name)])
+}
+
 module "supernode" {
   count = var.supernode_count
 
@@ -17,5 +32,6 @@ module "supernode" {
   site_id               = data.netbox_site.local.id
   batbone_vlan          = netbox_available_vlan.batbone.vid
 
-  vm_ssh_keys = local.ssh_keys
+  vm_ssh_keys    = local.ssh_keys
+  vm_target_node = local.vm_node_names[count.index % length(local.vm_node_names)]
 }

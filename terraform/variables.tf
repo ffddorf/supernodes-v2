@@ -49,3 +49,9 @@ variable "batbone_vlan_group_id" {
   description = "Netbox ID of the VLAN group used for Batbone VLANs"
   default     = 19
 }
+
+variable "vm_cluster" {
+  type        = string
+  description = "Name of the VM cluster to use in Netbox"
+  default     = "pve1"
+}
