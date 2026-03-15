@@ -7,10 +7,10 @@ bind-interfaces
 cache-size=10000
 
 no-resolv
-server=193.110.81.0@{{ service_ipv4_address | ansible.utils.ipaddr('address') }}
-server=185.253.5.0@{{ service_ipv4_address | ansible.utils.ipaddr('address') }}
-server=2a0f:fc80::@{{ service_ipv6_address | ansible.utils.ipaddr('address') }}
-server=2a0f:fc81::@{{ service_ipv6_address | ansible.utils.ipaddr('address') }}
+server=5.1.66.255@{{ service_ipv4_address | ansible.utils.ipaddr('address') }}
+server=185.150.99.255@{{ service_ipv4_address | ansible.utils.ipaddr('address') }}
+server=2001:678:e68:f000::@{{ service_ipv6_address | ansible.utils.ipaddr('address') }}
+server=2001:678:ed0:f000::@{{ service_ipv6_address | ansible.utils.ipaddr('address') }}
 all-servers
 neg-ttl=5
 
