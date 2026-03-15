@@ -9,13 +9,6 @@
     path: /etc/fastd/mesh/
     state: directory
 
-- name: Configure peer
-  ansible.builtin.template:
-    src: peer.conf.j2
-    dest: /etc/fastd/mesh/peer.conf
-    validate: fastd --verify-config --config-peer %s
-  notify: reload fastd
-
 - name: Configure server
   ansible.builtin.template:
     src: fastd.conf.j2
