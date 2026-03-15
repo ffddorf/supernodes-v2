@@ -3,6 +3,9 @@ terraform {
     netbox = {
       source = "e-breuninger/netbox"
     }
+    netboxbgp = {
+      source = "ffddorf/netbox-bgp"
+    }
     proxmox = {
       source  = "Telmate/proxmox"
       version = "~> 3.0.0"

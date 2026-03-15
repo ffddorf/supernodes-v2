@@ -40,6 +40,23 @@ provider "registry.terraform.io/ffddorf/iphelpers" {
   ]
 }
 
+provider "registry.terraform.io/ffddorf/netbox-bgp" {
+  version     = "0.1.0-rc8"
+  constraints = "0.1.0-rc8"
+  hashes = [
+    "h1:rkNReb/hWgMtnLOrdN9hn3Ci27ixhSzmRCwvZXSLgdo=",
+    "zh:011db78cb691562dde84f4079555822e031cfda487d5cd37a88ad4d2eda7f2ca",
+    "zh:0c30eaec114a0a82a25e940cc61a937d702a3137971fe02af33192c61b8155d7",
+    "zh:1505be1a2d8df3bc634ea2b797bedae2f65f9cb388df44c9c943462ca48fa189",
+    "zh:4d2d06d7345ba6b9a204c7e7b612614120648c642f34a02ad7b8e21e7592e986",
+    "zh:890df766e9b839623b1f0437355032a3c006226a6c200cd911e15ee1a9014e9f",
+    "zh:953228ab4d3565e062318f449bbcb151c4cb63fc1d421f14e66e76775e52992c",
+    "zh:9ff1831f9afc9cb7dd7ff7b01c11e98ffb6fa80e87efc72285774112ce90a668",
+    "zh:a11a25f95928a66947850b5d54f2867204fb1e3b03d43ba2e82144ab78c3b2e0",
+    "zh:c2250a11feb3a7eabdc0ef081294b49740a6ab2ab36f6f275b1a057fd2a927ab",
+  ]
+}
+
 provider "registry.terraform.io/hashicorp/http" {
   version = "3.5.0"
   hashes = [

@@ -4,6 +4,10 @@ terraform {
       source  = "e-breuninger/netbox"
       version = "5.2.1"
     }
+    netboxbgp = {
+      source  = "ffddorf/netbox-bgp"
+      version = "0.1.0-rc8"
+    }
     proxmox = {
       source  = "Telmate/proxmox"
       version = "3.0.2-rc07"
@@ -12,6 +16,10 @@ terraform {
 }
 
 provider "netbox" {
+  server_url = "https://netbox.freifunk-duesseldorf.de"
+}
+
+provider "netboxbgp" {
   server_url = "https://netbox.freifunk-duesseldorf.de"
 }
 

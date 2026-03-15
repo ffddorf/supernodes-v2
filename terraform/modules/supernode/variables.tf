@@ -101,3 +101,18 @@ variable "vm_role_name" {
   description = "Name of an existing Netbox device role to assign to the VM"
   default     = "Supernode v2"
 }
+
+variable "bgp_asn_id" {
+  type        = number
+  description = "Netbox ID of the ASN to use for BGP"
+}
+
+variable "bgp_peers" {
+  type = map(object({
+    id    = number
+    v4_id = number
+    v6_id = number
+  }))
+  description = "Map of name to device ID to create peering sessions with"
+  default     = {}
+}

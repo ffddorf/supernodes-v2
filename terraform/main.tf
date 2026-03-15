@@ -34,4 +34,14 @@ module "supernode" {
 
   vm_ssh_keys    = local.ssh_keys
   vm_target_node = local.vm_node_names[count.index % length(local.vm_node_names)]
+
+  bgp_asn_id = data.netbox_asn.ffddorf_public.id
+  bgp_peers = {
+    for dev in data.netbox_devices.core_routers.devices :
+    dev.name => {
+      id    = dev.device_id
+      v4_id = one(data.netbox_ip_addresses.core_router_addrs_v4[dev.device_id].ip_addresses).id
+      v6_id = one(data.netbox_ip_addresses.core_router_addrs_v6[dev.device_id].ip_addresses).id
+    }
+  }
 }

@@ -55,3 +55,9 @@ variable "vm_cluster" {
   description = "Name of the VM cluster to use in Netbox"
   default     = "pve1"
 }
+
+variable "core_router_tag" {
+  type        = string
+  description = "Name of the tag to use to find core routers"
+  default     = "core-router"
+}
