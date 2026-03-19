@@ -12,6 +12,10 @@ terraform {
       source  = "Telmate/proxmox"
       version = "3.0.2-rc07"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "5.18.0"
+    }
   }
 }
 
@@ -26,3 +30,5 @@ provider "netboxbgp" {
 provider "proxmox" {
   pm_api_url = "https://pve.freifunk-duesseldorf.de/api2/json"
 }
+
+provider "cloudflare" {}
