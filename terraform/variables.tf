@@ -61,3 +61,15 @@ variable "core_router_tag" {
   description = "Name of the tag to use to find core routers"
   default     = "core-router"
 }
+
+variable "mesh_anycast_prefix_v4" {
+  type        = string
+  description = "Prefix for anycast addresses used by domains"
+  default     = "10.254.254.0/24"
+}
+
+variable "mesh_anycast_prefix_v6" {
+  type        = string
+  description = "Prefix for anycast addresses used by domains"
+  default     = "2001:678:b7c:7ff::/64"
+}

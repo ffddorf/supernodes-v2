@@ -116,3 +116,13 @@ variable "bgp_peers" {
   description = "Map of name to device ID to create peering sessions with"
   default     = {}
 }
+
+variable "anycast_prefix_v4" {
+  type        = string
+  description = "Prefix used for anycast on ipv4"
+}
+
+variable "anycast_prefix_v6" {
+  type        = string
+  description = "Prefix used for anycast on ipv6"
+}

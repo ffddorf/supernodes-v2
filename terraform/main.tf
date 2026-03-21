@@ -44,4 +44,7 @@ module "supernode" {
       v6_id = one(data.netbox_ip_addresses.core_router_addrs_v6[dev.device_id].ip_addresses).id
     }
   }
+
+  anycast_prefix_v4 = netbox_prefix.domain_anycast_v4.prefix
+  anycast_prefix_v6 = netbox_prefix.domain_anycast_v6.prefix
 }

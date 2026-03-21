@@ -31,9 +31,21 @@ dhcp_range_end_address_int: "{{ (config_context|first).dhcp_range.end_address|an
 dhcp_pool_offset: "{{ (dhcp_range_start_address_int|int) - (client_ipv4_start_address_int|int) - 1 }}"
 dhcp_pool_size: "{{ (dhcp_range_end_address_int|int) - (dhcp_range_start_address_int|int) }}"
 
-# Private Anycast Address in the domain used for reaching DHCP & DNS
-# todo: replace with data from netbox
-anycast_service_address: "{{ gateway_ipv4_address | ansible.utils.ipaddr('network/prefix') | ansible.utils.ipaddr('-2') }}"
+# Private Anycast Address in the domain used for reaching DNS
+anycast_ipv4_service_address: >-
+  {{ loopback_interface.ip_addresses |
+      selectattr('role.value', 'equalto', 'anycast') |
+      map(attribute='address') |
+      ansible.utils.ipv4 |
+      first
+  }}
+anycast_ipv6_service_address: >-
+  {{ loopback_interface.ip_addresses |
+      selectattr('role.value', 'equalto', 'anycast') |
+      map(attribute='address') |
+      ansible.utils.ipv6 |
+      first
+  }}
 
 wan_interface: "{{ interfaces | selectattr('name', 'equalto', 'eth0') | first }}"
 # Outside IP used for connecting to the supernode from the Internet

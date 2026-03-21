@@ -29,3 +29,17 @@ resource "netbox_prefix" "domain_ipv4" {
 
   vrf_id = data.netbox_vrf.mesh.id
 }
+
+resource "netbox_prefix" "domain_anycast_v4" {
+  prefix      = cidrsubnet(var.mesh_anycast_prefix_v4, 8, var.domain_id)
+  description = "Anycast address for ${var.domain_name}"
+  status      = "active"
+
+  vrf_id = data.netbox_vrf.mesh.id
+}
+
+resource "netbox_prefix" "domain_anycast_v6" {
+  prefix      = cidrsubnet(var.mesh_anycast_prefix_v6, 64, var.domain_id)
+  description = "Anycast address for ${var.domain_name}"
+  status      = "active"
+}

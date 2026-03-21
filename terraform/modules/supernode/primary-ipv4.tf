@@ -66,13 +66,15 @@ resource "netbox_ip_range" "dhcp" {
   description   = "DHCP range for Supernode ${var.supernode_name}"
   start_address = "${local.dhcp_range_start_address}/32"
   end_address   = "${local.dhcp_range_end_address}/32"
+  vrf_id        = var.domain_vrf_id
 }
 
-resource "netbox_ip_address" "anycast" {
-  ip_address  = "${cidrhost(var.domain_ipv4_prefix, -2)}/32"
+resource "netbox_ip_address" "anycast_v4" {
+  ip_address  = var.anycast_prefix_v4
   status      = "active"
   role        = "anycast"
-  description = "DHCP/DNS anycast on ${var.supernode_name}"
+  description = "DNS anycast on supernode ${var.supernode_name}"
+  vrf_id      = var.domain_vrf_id
 
   virtual_machine_interface_id = netbox_interface.lo.id
 }
