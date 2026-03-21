@@ -9,10 +9,10 @@ table inet filter {
     tcp dport 25 reject with icmp type port-unreachable
 
     # limit routed traffic to ip subnet
-    iif br0 ip saddr $client_subnet4 accept
-    oif br0 ip daddr $client_subnet4 accept
-    iif br0 ip6 saddr $client_subnet6 accept
-    oif br0 ip6 daddr $client_subnet6 accept
+    iif br-client ip saddr $client_subnet4 accept
+    oif br-client ip daddr $client_subnet4 accept
+    iif br-client ip6 saddr $client_subnet6 accept
+    oif br-client ip6 daddr $client_subnet6 accept
   }
 }
 

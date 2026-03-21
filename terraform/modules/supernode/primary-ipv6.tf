@@ -10,7 +10,7 @@ resource "netbox_available_ip_address" "primary_ipv6" {
   prefix_id = data.netbox_prefix.lan6.id
 
   object_type  = "virtualization.vminterface"
-  interface_id = netbox_interface.br0.id
+  interface_id = netbox_interface.br-client.id
 
   tags = toset(var.tags)
 }

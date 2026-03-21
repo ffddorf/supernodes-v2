@@ -47,7 +47,7 @@ resource "netbox_available_ip_address" "lan_ipv4" {
   vrf_id    = var.domain_vrf_id
 
   object_type  = "virtualization.vminterface"
-  interface_id = netbox_interface.br0.id
+  interface_id = netbox_interface.br-client.id
 
   tags = toset(var.tags)
 }

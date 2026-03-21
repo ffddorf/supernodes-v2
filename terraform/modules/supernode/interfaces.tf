@@ -28,6 +28,8 @@ resource "netbox_interface" "eth1" {
   mode          = "access"
   untagged_vlan = data.netbox_vlan.batbone.id
 
+  // todo: set bridge membership
+
   tags = toset(var.tags)
 }
 
@@ -44,11 +46,25 @@ resource "netbox_interface" "lo" {
   tags = toset(var.tags)
 }
 
-resource "netbox_interface" "br0" {
+moved {
+  from = netbox_interface.br0
+  to   = netbox_interface.br-client
+}
+
+resource "netbox_interface" "br-client" {
   virtual_machine_id = netbox_virtual_machine.supernode.id
 
-  name        = "br0"
+  name        = "br-client"
   description = "client bridge"
+
+  tags = toset(var.tags)
+}
+
+resource "netbox_interface" "br-mesh" {
+  virtual_machine_id = netbox_virtual_machine.supernode.id
+
+  name        = "br-mesh"
+  description = "mesh bridge"
 
   tags = toset(var.tags)
 }

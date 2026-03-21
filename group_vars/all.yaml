@@ -9,7 +9,7 @@ routers:
 fastd_secret_seed: "{{ (config_context|first).fastd_secret_seed }}"
 
 client_ipv4_container: "10.0.0.0/8"
-client_bridge_interface: "{{ interfaces | selectattr('name', 'equalto', 'br0') | first }}"
+client_bridge_interface: "{{ interfaces | selectattr('name', 'equalto', 'br-client') | first }}"
 gateway_ipv4_address: >-
   {{ client_bridge_interface.ip_addresses |
       map(attribute='address') |
