@@ -17,7 +17,7 @@
   ansible.builtin.lineinfile:
     path: /etc/nftables.conf
     line: include "/etc/nftables.d/*"
-  notify: reload nftables
+  notify: restart nftables
 
 - name: Enable rule loading
   ansible.builtin.service:

@@ -8,7 +8,7 @@
     name: dnsmasq
     state: restarted
 
-- name: reload nftables
+- name: restart nftables
   ansible.builtin.service:
     name: nftables
-    state: restart
+    state: restarted

@@ -39,4 +39,4 @@
   ansible.builtin.template:
     src: firewall.nft.j2
     dest: /etc/nftables.d/firewall.nft
-  notify: reload nftables
+  notify: restart nftables
