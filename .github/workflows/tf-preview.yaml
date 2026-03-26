@@ -26,7 +26,7 @@ jobs:
       - name: Download Workspace
         run: |
           curl ${{ inputs.workspace_transfer_url }} --user github_pat:${TF_HTTP_PASSWORD} --fail --silent | tar -xzf -
-      - uses: hashicorp/setup-terraform@v3
+      - uses: hashicorp/setup-terraform@v4
         with:
           terraform_version: ${TERRAFORM_VERSION}
       - run: terraform init
