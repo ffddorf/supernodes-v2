@@ -20,6 +20,6 @@ table inet nat {
   chain postrouting {
     type nat hook postrouting priority 0;
 
-    ip saddr $client_subnet4 oif {{ ansible_default_ipv4.interface }} snat to {{ service_ipv4_address | ansible.utils.ipaddr('address') }}
+    ip saddr $client_subnet4 oif {{ ansible_facts['default_ipv4'].interface }} snat to {{ service_ipv4_address | ansible.utils.ipaddr('address') }}
   }
 }

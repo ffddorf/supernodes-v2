@@ -1,3 +1,5 @@
+ansible_managed: "Ansible managed!"
+
 routers:
   - name: CR3
     bgp_peer_ipv4_address: "45.151.166.3"

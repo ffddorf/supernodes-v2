@@ -5,10 +5,10 @@
 
 - set_fact:
     arch_suffix: amd64
-  when: ansible_architecture == "x86_64"
+  when: ansible_facts["architecture"] == "x86_64"
 - set_fact:
     arch_suffix: arm64
-  when: ansible_architecture == "aarch64"
+  when: ansible_facts["architecture"] == "aarch64"
 
 - name: Ensure full kernel
   package:
