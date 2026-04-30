@@ -152,6 +152,14 @@ jobs:
         with:
           path: outputs
           pattern: tf-summary-*
+          skip-decompress: true
+      - name: Extract artifacts
+        run: |
+          for file in $(ls ./outputs); do
+            DIR=outputs/${file%.zip}
+            mkdir -p "${DIR}"
+            unzip "outputs/${file}" -d "${DIR}"
+          done
       - name: Show plan on PR
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
