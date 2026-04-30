@@ -2,6 +2,16 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended",
-    "customManagers:githubActionsVersions"
+    "customManagers:githubActionsVersions",
+    "helpers:pinGitHubActionDigests"
+  ],
+  "packageRules": [
+    {
+      "matchCategories": [
+        "ci"
+      ],
+      "groupName": "CI dependencies",
+      "groupSlug": "ci-deps"
+    }
   ]
 }
