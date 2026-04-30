@@ -1,25 +1,25 @@
 terraform {
   required_providers {
     netbox = {
-      source = "e-breuninger/netbox"
+      source = "registry.opentofu.org/e-breuninger/netbox"
     }
     netboxbgp = {
-      source = "ffddorf/netbox-bgp"
+      source = "registry.terraform.io/ffddorf/netbox-bgp"
     }
     proxmox = {
-      source  = "Telmate/proxmox"
+      source  = "registry.opentofu.org/Telmate/proxmox"
       version = "~> 3.0.0"
     }
     iphelpers = {
-      source  = "ffddorf/iphelpers"
+      source  = "registry.terraform.io/ffddorf/iphelpers"
       version = "~> 1.0.0"
     }
     macaddress = {
-      source  = "ivoronin/macaddress"
+      source  = "registry.opentofu.org/ivoronin/macaddress"
       version = "~> 0.3.2"
     }
     cloudflare = {
-      source = "cloudflare/cloudflare"
+      source = "registry.opentofu.org/cloudflare/cloudflare"
     }
   }
 }
