@@ -24,7 +24,7 @@
     src: fastd.conf.j2
     dest: /etc/fastd/mesh/fastd.conf
     validate: fastd --verify-config --config %s
-  notify: reload fastd
+  notify: restart fastd
 
 - name: Show pubkey
   block:
