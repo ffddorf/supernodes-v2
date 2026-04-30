@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: supernode-v2
   become: true
   roles:
     - { role: kernel-full, tags: kernel-full }
@@ -8,3 +8,8 @@
     - { role: fastd, tags: fastd }
     - { role: batman, tags: batman }
     - { role: gateway, tags: gateway }
+
+- hosts: asu
+  become: true
+  roles:
+    - role: asu
