@@ -1,19 +1,19 @@
 terraform {
   required_providers {
     netbox = {
-      source  = "e-breuninger/netbox"
+      source  = "registry.opentofu.org/e-breuninger/netbox"
       version = "5.2.1"
     }
     netboxbgp = {
-      source  = "ffddorf/netbox-bgp"
-      version = "0.1.0-rc8"
+      source  = "registry.terraform.io/ffddorf/netbox-bgp"
+      version = "= 0.1.0-rc8"
     }
     proxmox = {
-      source  = "Telmate/proxmox"
-      version = "3.0.2-rc07"
+      source  = "registry.opentofu.org/Telmate/proxmox"
+      version = "= 3.0.2-rc07"
     }
     cloudflare = {
-      source  = "cloudflare/cloudflare"
+      source  = "registry.opentofu.org/cloudflare/cloudflare"
       version = "5.18.0"
     }
   }
