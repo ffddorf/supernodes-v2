@@ -42,7 +42,7 @@ jobs:
         working-directory: ./terraform
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: opentofu/setup-opentofu@fc711fa910b93cba0f3fbecaafc9f42fd0c411cb # v2.0.0
         with:
           tofu_version: ${{ env.OPENTOFU_VERSION }}
