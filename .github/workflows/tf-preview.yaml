@@ -11,8 +11,8 @@ jobs:
     name: Speculative Plan
     runs-on: ubuntu-22.04
     env:
-      # renovate: datasource=github-releases depName=hashicorp/terraform
-      TERRAFORM_VERSION: "1.9.3"
+      # renovate: datasource=github-releases depName=opentofu/opentofu
+      OPENTOFU_VERSION: "1.11.6"
 
       TF_HTTP_PASSWORD: ${{ github.token }}
       TF_IN_AUTOMATION: "true"
@@ -26,8 +26,8 @@ jobs:
       - name: Download Workspace
         run: |
           curl ${{ inputs.workspace_transfer_url }} --user github_pat:${TF_HTTP_PASSWORD} --fail --silent | tar -xzf -
-      - uses: hashicorp/setup-terraform@v3
+      - uses: opentofu/setup-opentofu@fc711fa910b93cba0f3fbecaafc9f42fd0c411cb # v2.0.0
         with:
-          terraform_version: ${TERRAFORM_VERSION}
-      - run: terraform init
-      - run: terraform plan
+          tofu_version: ${OPENTOFU_VERSION}
+      - run: tofu init
+      - run: tofu plan
