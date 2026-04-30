@@ -1,0 +1,13 @@
+# nftables rules for the batman bridge
+
+table bridge filter {
+  chain forward {
+    type filter hook forward priority filter;
+    policy accept;
+
+    # drop direct mesh traffic between VPN clients
+    # they should see each other via the virtual batman switch
+    # not on the underlying transport
+    meta ibrname "br-mesh" drop;
+  }
+}

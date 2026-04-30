@@ -2,3 +2,8 @@
   ansible.builtin.service:
     name: systemd-networkd
     state: reloaded
+
+- name: restart nftables
+  ansible.builtin.service:
+    name: nftables
+    state: restarted

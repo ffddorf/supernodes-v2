@@ -15,6 +15,13 @@
     line: batman-adv
     create: true
 
+- name: Configure Bridge Filtering
+  ansible.builtin.template:
+    src: batman-bridge.nft.j2
+    dest: /etc/nftables.d/batman-bridge.nft
+    validate: nft --check --file %s
+  notify: restart nftables
+
 - name: Configure Networking
   ansible.builtin.template:
     src: "{{ item }}.j2"
