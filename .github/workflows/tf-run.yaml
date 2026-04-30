@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@v4
       - uses: opentofu/setup-opentofu@fc711fa910b93cba0f3fbecaafc9f42fd0c411cb # v2.0.0
         with:
-          tofu_version: ${OPENTOFU_VERSION}
+          tofu_version: ${{ env.OPENTOFU_VERSION }}
       - run: tofu init
       - run: tofu plan -out=tfplan
       - name: tofu apply
