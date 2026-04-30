@@ -2,7 +2,7 @@ terraform {
   required_providers {
     netbox = {
       source  = "registry.opentofu.org/e-breuninger/netbox"
-      version = "5.2.1"
+      version = "5.3.0"
     }
     netboxbgp = {
       source  = "registry.terraform.io/ffddorf/netbox-bgp"
