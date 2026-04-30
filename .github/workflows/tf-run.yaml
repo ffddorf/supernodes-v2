@@ -6,7 +6,7 @@ on:
 jobs:
   run:
     name: Run
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         domain: [ "dev" ]
@@ -42,7 +42,7 @@ jobs:
         working-directory: ./terraform
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: opentofu/setup-opentofu@fc711fa910b93cba0f3fbecaafc9f42fd0c411cb # v2.0.0
         with:
           tofu_version: ${{ env.OPENTOFU_VERSION }}
@@ -76,7 +76,7 @@ jobs:
       - run: tofu show -json tfplan > tfplan.json
       - run: tofu show -no-color tfplan > summary.txt
       - name: Create status check with details
-        uses: actions/github-script@v7
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           github-token: ${{ github.token }}
           script: |
@@ -134,7 +134,7 @@ jobs:
               },
             });
       - name: Upload summary
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: tf-summary-${{ matrix.domain }}
           path: |
@@ -143,17 +143,25 @@ jobs:
 
   summary:
     name: Summary
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: run
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Download outputs from workspaces
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           path: outputs
           pattern: tf-summary-*
+          skip-decompress: true
+      - name: Extract artifacts
+        run: |
+          for file in $(ls ./outputs); do
+            DIR=outputs/${file%.zip}
+            mkdir -p "${DIR}"
+            unzip "outputs/${file}" -d "${DIR}"
+          done
       - name: Show plan on PR
-        uses: actions/github-script@v7
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         with:
           github-token: ${{ github.token }}
           script: |
@@ -199,14 +207,18 @@ jobs:
 
             const fs = require('fs').promises
 
-            const summaries = await fs.readdir('outputs');
+            const summaries = await fs.readdir('outputs', { withFileTypes: true });
             let body = "#### :building_construction: OpenTofu Plan";
 
             for (const dir of summaries) {
-              const plan = await fs.readFile(`outputs/${dir}/summary.txt`, 'utf-8')
-              const title = await fs.readFile(`outputs/${dir}/title.txt`, 'utf-8')
+              if (!dir.isDirectory()) {
+                continue
+              }
 
-              const domain = dir.slice("tf-summary-".length)
+              const plan = await fs.readFile(`outputs/${dir.name}/summary.txt`, 'utf-8')
+              const title = await fs.readFile(`outputs/${dir.name}/title.txt`, 'utf-8')
+
+              const domain = dir.name.slice("tf-summary-".length)
 
               const codefence = "```"
               body += `
