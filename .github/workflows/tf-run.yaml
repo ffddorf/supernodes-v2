@@ -207,14 +207,18 @@ jobs:
 
             const fs = require('fs').promises
 
-            const summaries = await fs.readdir('outputs');
+            const summaries = await fs.readdir('outputs', { withFileTypes: true });
             let body = "#### :building_construction: OpenTofu Plan";
 
             for (const dir of summaries) {
-              const plan = await fs.readFile(`outputs/${dir}/summary.txt`, 'utf-8')
-              const title = await fs.readFile(`outputs/${dir}/title.txt`, 'utf-8')
+              if (!dir.isDirectory()) {
+                continue
+              }
 
-              const domain = dir.slice("tf-summary-".length)
+              const plan = await fs.readFile(`outputs/${dir.name}/summary.txt`, 'utf-8')
+              const title = await fs.readFile(`outputs/${dir.name}/title.txt`, 'utf-8')
+
+              const domain = dir.name.slice("tf-summary-".length)
 
               const codefence = "```"
               body += `
