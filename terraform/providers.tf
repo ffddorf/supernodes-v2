@@ -14,7 +14,7 @@ terraform {
     }
     cloudflare = {
       source  = "registry.opentofu.org/cloudflare/cloudflare"
-      version = "5.18.0"
+      version = "5.19.1"
     }
   }
 }
