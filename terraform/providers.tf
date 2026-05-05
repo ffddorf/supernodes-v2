@@ -6,7 +6,7 @@ terraform {
     }
     netboxbgp = {
       source  = "registry.terraform.io/ffddorf/netbox-bgp"
-      version = "= 0.1.0-rc8"
+      version = "0.1.0"
     }
     proxmox = {
       source  = "registry.opentofu.org/Telmate/proxmox"
