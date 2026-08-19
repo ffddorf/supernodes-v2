@@ -19,7 +19,7 @@ jobs:
       checks: write
     env:
       # renovate: datasource=github-releases depName=opentofu/opentofu
-      OPENTOFU_VERSION: "1.11.6"
+      OPENTOFU_VERSION: "1.12.6"
 
       TF_HTTP_ADDRESS: https://ffddorf-terraform-backend.fly.dev/state/supernodes-v2/${{
         matrix.domain }}

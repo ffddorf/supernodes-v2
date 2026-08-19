@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       # renovate: datasource=github-releases depName=opentofu/opentofu
-      OPENTOFU_VERSION: "1.11.6"
+      OPENTOFU_VERSION: "1.12.6"
 
       TF_HTTP_PASSWORD: ${{ github.token }}
       TF_IN_AUTOMATION: "true"
