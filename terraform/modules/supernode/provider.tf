@@ -8,7 +8,7 @@ terraform {
     }
     proxmox = {
       source  = "registry.opentofu.org/Telmate/proxmox"
-      version = "~> 3.0.0"
+      version = "~> 3.0.2-rc10"
     }
     iphelpers = {
       source  = "registry.terraform.io/ffddorf/iphelpers"

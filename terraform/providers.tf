@@ -10,7 +10,7 @@ terraform {
     }
     proxmox = {
       source  = "registry.opentofu.org/Telmate/proxmox"
-      version = "= 3.0.2-rc07"
+      version = "3.0.2-rc10"
     }
     cloudflare = {
       source  = "registry.opentofu.org/cloudflare/cloudflare"
