@@ -19,25 +19,25 @@ provider "registry.opentofu.org/cloudflare/cloudflare" {
 }
 
 provider "registry.opentofu.org/e-breuninger/netbox" {
-  version     = "5.3.0"
-  constraints = "5.3.0"
+  version     = "6.0.1"
+  constraints = "6.0.1"
   hashes = [
-    "h1:/dL9wPjrIpNtCp3ZdANiI4ZXZlD9b0cqZvD0YzRdtg8=",
-    "h1:0b22DjOhv9RPaa6sKmBrkZ5t6ZYLu+9a7AjNBsS7GWM=",
-    "h1:JwCpy3fcD8S8RxTtCTy7ac+rxK5eSs+9n76RcT51YMg=",
-    "h1:K1e5bERSI+AAF3EdZ6CnNjsoJFVsAdstjJfNP4/oOhk=",
-    "h1:QlSg3hlSvt77EUf/C6Ob32fmRBhkAQtq84YgIeKv77s=",
-    "h1:Zt8/6mX4A1pk8KZe2GIwvPzqgcTXlUyM5b6kGJQuU5s=",
-    "h1:tuD8u2h2hOMY+JfYLqu5Eh+TOcX51gUucm5vnaYbVtE=",
-    "h1:uni30JHRVGkZZ72rIhud2y618aBvJtk/KqvbCzdWI2k=",
-    "zh:013829552dbd1d98348cccbc6e6a4eab256d043063a60020f16bb6a0c95febb9",
-    "zh:031b175ad0fa3523f82728c40ddb3b7048a13294bf9442da32e2775fe645556a",
-    "zh:2d9e1c70df4f0a41358f068a478b36748ec3f71c94e8c972724fda49dddbceda",
-    "zh:43c910417ae5b89355ae7a67913c9df8f0aec6d4470bc477777fdd3159299dd1",
-    "zh:4740a15b86fd53e7cbc88071f2d67ea2d17ecefa74ab7fdfb530dd784e569d47",
-    "zh:d16eb3f6bb47d21de2f7140254e8ba261e428b5f9a6ac26bb84ece2ad872c7d9",
-    "zh:d7c52802a35d8203192a9b2f3ed22419aebc076db89561aa9ad529a76a2154a0",
-    "zh:ee860302f50f755429d896da02606df1b896d343779e064d04bb2d96dc99c5da",
+    "h1:VI+Cqx5CM6R1GHHgnUmDfL3A7Aew5xf8n+Wg3tZaMd4=",
+    "h1:ZxoTmuNpn0i0/L5YDYZN+7DOnHOpblWLEIBKpyyKww8=",
+    "h1:ed5qAq5O9JkzQWqGKUPQ2cFkl+kUW8GpRxf6v/8QVoc=",
+    "h1:gdPBMpVGp4mQ3wYkKfVBx+G0ZJltnbJ9pwa0otZMoEo=",
+    "h1:ndfMSoxEyBpzGZvAFgYY9jxoZt+XHfCxFT4B2y4jMmg=",
+    "h1:oV5+AJoHWbr+heAwyeAscMsrvxhX90jcWDw44et1WP4=",
+    "h1:ozbSA+reOOOgjj4sIdAHpPgIoBE9GDfYslKOAOsnXzU=",
+    "h1:zKZDqJaHl4TqEEumEbe4I551A7DO4o3Guz3n+AVhj2s=",
+    "zh:6161a9a73c29be31d632d35a0f0560bdde6bb7a04086d3e882a1c661b6f69a83",
+    "zh:73d4034acc0337ef4ab2bc54eb0ce0f8aaf3f759a6819bbc54f0d65d2d343ca3",
+    "zh:8e731084c9fc4e763325b403ec6d8aa26026b6048c841f6530edab37a083938b",
+    "zh:93d64c561c698613d144955c52244be30d12fc61d3a0e46d9e0ff0b27d919939",
+    "zh:9b6b855680682842196cd482cdf137fd29755e67659cf15e8086694d7b78f197",
+    "zh:a1e09e50a4e9495dc9db0bf30dd14c526e86ec235a66d4e7707bfda99838c167",
+    "zh:a6f5ddec8e2d63ba804222eb952a6eef86bfac2ac105c57326406bf728578bdb",
+    "zh:faa983cd87822db38e7961fc2828453a7e6284669796e8851988010a8aed7796",
   ]
 }
 
